@@ -82,15 +82,15 @@ DEFAULT_OPTIONS = {
 }
 ```
 
-Any subset of these options can be passed to the constructor as a named
-argument. e.g.
+Any subset of these options can be passed to the constructor in the form
+of keyword arguments. e.g.
 
 ```python
 options = {
     # Some subset of options
 }
 app = Celery('project')
-slack_app = Slackify(app, options=options)
+slack_app = Slackify(app, **options)
 ```
 
 Most of the options are self explanatory, but here are some additional details:

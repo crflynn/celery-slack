@@ -18,7 +18,7 @@ app.config_from_object('test.celery.config')
 #     "show_task_prerun": True,
 #     "failures_only": True,
 # }
-# slack_app = Slackify(app, options=options)
+# slack_app = Slackify(app, **options)
 
 
 if __name__ == '__main__':
