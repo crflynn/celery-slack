@@ -1,0 +1,21 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+celery = "*"
+requests = "*"
+redis = "*"
+ephem = "*"
+
+
+[dev-packages]
+
+pytest = "*"
+betamax = "*"
+pytest-cov = "*"
+pytest-mock = "*"

@@ -1,0 +1,15 @@
+# webhook
+*secret.py
+
+# celery
+celerybeat-schedule
+
+# pytest
+.cache
+
+# coverage
+.coverage
+_cov
+
+# python
+__pycache__
