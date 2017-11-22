@@ -1,5 +1,6 @@
 """Pytest fixtures."""
 # flake8: noqa D103
+import copy
 from datetime import timedelta
 import os
 import uuid
@@ -241,3 +242,10 @@ def beat_schedule(request):
 @pytest.fixture(params=[True, False])
 def beat_show_full_task_path(request):
     return request.param
+
+
+def get_options(default, **kwargs):
+    """Get full options dict."""
+    options = copy.deepcopy(default)
+    options.update(**kwargs)
+    return dict(options)

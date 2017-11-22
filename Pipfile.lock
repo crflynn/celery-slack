@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "80800f0808743265e577683a39bc8084a762f405ef4182293ca169a94f3379de"
+            "sha256": "45b781b564463ece2e7a3a0717edb95d1245ad672712ec32f15d3618a5603184"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -134,6 +134,13 @@
         }
     },
     "develop": {
+        "apipkg": {
+            "hashes": [
+                "sha256:65d2aa68b28e7d31233bb2ba8eb31cda40e4671f8ac2d6b241e358c9652a74b9",
+                "sha256:2e38399dbe842891fe85392601aab8f40a8f4cc5a9053c326de35a1cc0297ac6"
+            ],
+            "version": "==1.4"
+        },
         "betamax": {
             "hashes": [
                 "sha256:91d5f6ca6b03901df93f9c0c2ac7fe1a0ff557bd6f30124ec73cefae00fc14a2",
@@ -200,6 +207,13 @@
             ],
             "version": "==4.4.2"
         },
+        "execnet": {
+            "hashes": [
+                "sha256:fc155a6b553c66c838d1a22dba1dc9f5f505c43285a878c6f74a79c024750b83",
+                "sha256:a7a84d5fa07a089186a329528f127c9d73b9de57f1a1131b82bb5320ee651f6a"
+            ],
+            "version": "==1.5.0"
+        },
         "idna": {
             "hashes": [
                 "sha256:8c7309c718f94b3a625cb648ace320157ad16ff131ae0af362c9f21b80ef6ec4",
@@ -228,12 +242,26 @@
             ],
             "version": "==2.5.1"
         },
+        "pytest-forked": {
+            "hashes": [
+                "sha256:f275cb48a73fc61a6710726348e1da6d68a978f0ec0c54ece5a5fae5977e5a08",
+                "sha256:e4500cd0509ec4a26535f7d4112a8cc0f17d3a41c29ffd4eab479d2a55b30805"
+            ],
+            "version": "==0.2"
+        },
         "pytest-mock": {
             "hashes": [
                 "sha256:7ed6e7e8c636fd320927c5d73aedb77ac2eeb37196c3410e6176b7c92fdf2f69",
                 "sha256:920d1167af5c2c2ad3fa0717d0c6c52e97e97810160c15721ac895cac53abb1c"
             ],
             "version": "==1.6.3"
+        },
+        "pytest-xdist": {
+            "hashes": [
+                "sha256:997ed2d6ed487fc41e16b5a0d00b944574a2f635375ee7fbea6a1d6b3876e2cd",
+                "sha256:433e82f9b34986a4e4b2be38c60e82cca3ac64b7e1b38f4d8e3e118292939712"
+            ],
+            "version": "==1.20.1"
         },
         "requests": {
             "hashes": [

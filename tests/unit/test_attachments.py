@@ -9,7 +9,7 @@ from celery_slack.attachments import get_task_failure_attachment
 from celery_slack.attachments import get_task_prerun_attachment
 from celery_slack.attachments import get_task_success_attachment
 from celery_slack.attachments import schedule_to_string
-from .common import get_options
+from .conftest import get_options
 
 
 def test_schedule_to_string(schedule):
@@ -53,9 +53,9 @@ def test_beat_init_attachment(
         if use_fixed_width:
             assert "`" in message
         if beat_show_full_task_path:
-            assert "test.celery.tasks.successful_task " in message
+            assert "tests.celery.tasks.successful_task " in message
         else:
-            assert "test.celery.tasks.successful_task " not in message
+            assert "tests.celery.tasks.successful_task " not in message
             assert "tasks.successful_task" in message
     else:
         assert "with schedule" not in message

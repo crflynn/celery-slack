@@ -56,7 +56,7 @@ class Slackify(object):
     def __init__(self, app, webhook=None, beat_schedule=None, **options):
         """Slackify the celery object."""
         self.app = app
-        self.options = DEFAULT_OPTIONS
+        self.options = DEFAULT_OPTIONS.copy()
         self.options.update(**options)
         self.options["webhook"] = webhook
         self.options["beat_schedule"] = (

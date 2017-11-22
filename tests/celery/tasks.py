@@ -1,25 +1,12 @@
 """Test tasks."""
 # flake8: noqa E501
-from .celery import app
+from tests.celery.celery import app
 
 
 @app.task
 def successful_task(x, y):
     """Add x and y."""
-    return {
-       "ResponseMetadata": {
-           "RequestId": "c7b0f23b-cc58-11e7-87be-d766f4da3234",
-           "RetryAttempts": 0,
-           "HTTPStatusCode": 200,
-           "HTTPHeaders": {
-               "x-amzn-requestid": "c7b0f23b-cc58-11e7-87be-d766f4da3234",
-               "date": "Sat, 18 Nov 2017 12:05:34 GMT",
-               "content-type": "text/xml",
-               "content-length": "338"
-           }
-       },
-       "MessageId": "0100015fcf050827-3df4b4e5-f365-4658-9746-42115b95a08f-000000"
-    }
+    return {"sample": "json"}
 
 
 @app.task

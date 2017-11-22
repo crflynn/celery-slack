@@ -5,7 +5,7 @@ from celery_slack.callbacks import slack_task_success
 from celery_slack.callbacks import slack_celery_startup
 from celery_slack.callbacks import slack_celery_shutdown
 from celery_slack.callbacks import slack_beat_init
-from .common import get_options
+from .conftest import get_options
 
 
 def test_slack_beat_init_callback(
