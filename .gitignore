@@ -13,3 +13,14 @@ _cov
 
 # python
 __pycache__
+
+# packaging
+*.egg-info
+build/
+dist/
+
+# tox
+.tox
+
+# docs
+_build
