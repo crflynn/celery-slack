@@ -1,5 +1,3 @@
-.. :history:
-
 Release History
 ---------------
 
@@ -7,5 +5,5 @@ Release History
 ~~~~~
 
 * First release.
-* Slack notifications for beat init, celery startup/shutdown, task prerun/success/failure
+* Slack notifications for beat init, celery startup/shutdown, task prerun/success/failure.
 * Several options related to presentation, task filtration, and attachment colors.

@@ -141,3 +141,9 @@ Slack messages using the `include_tasks` or `exclude_tasks` options.**
 **If a webhook response contains response code 429, celery-slack will suppress
 all messages for a time period given by the Retry-After response header. Upon
 returning, celery-slack will post a WARNING message to Slack.**
+
+
+## TODO
+
+* Celery version compatibility testing?
+* Python version compatibility testing?
