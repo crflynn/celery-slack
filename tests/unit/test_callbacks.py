@@ -28,7 +28,7 @@ def test_slack_celery_startup_callback(
         webhook,
         mocker,
         ):
-    """Test the slack beat init callback."""
+    """Test the slack celery startup callback."""
     these_options = locals()
     these_options.pop("default_options")
     these_options.pop("mocker")
@@ -43,7 +43,7 @@ def test_slack_celery_shutdown_callback(
         webhook,
         mocker,
         ):
-    """Test the slack beat init callback."""
+    """Test the slack celery shutdown callback."""
     these_options = locals()
     these_options.pop("default_options")
     these_options.pop("mocker")
@@ -63,7 +63,7 @@ def test_slack_task_prerun_callback(
         kwargs,
         mocker,
         ):
-    """Test the slack beat init callback."""
+    """Test the slack task prerun callback."""
     these_options = locals()
     these_options.pop("default_options")
     these_options.pop("task_id")
@@ -94,7 +94,7 @@ def test_slack_task_success_callback(
         kwargs,
         mocker,
         ):
-    """Test the slack beat init callback."""
+    """Test the slack task success callback."""
     these_options = locals()
     these_options.pop("default_options")
     these_options.pop("mocker")
@@ -144,7 +144,7 @@ def test_slack_task_failure_callback(
         einfo,
         mocker,
         ):
-    """Test the slack beat init callback."""
+    """Test the slack task failure callback."""
     these_options = locals()
     these_options.pop("default_options")
     these_options.pop("mocker")
