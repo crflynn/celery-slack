@@ -22,5 +22,8 @@ dist/
 # tox
 .tox
 
+# pyenv
+.python-version
+
 # docs
 _build

@@ -27,12 +27,20 @@ information.
 Installation
 ------------
 
-Celery-slack is a python package available on pypi and is compatible with
-Python 3. It can be installed using ``pip``:
+Celery-slack is a python package available on
+`pypi <https://pypi.python.org/pypi>`_ and can be installed using ``pip``:
 
 .. code-block:: python
 
    pip install celery-slack
+
+
+Compatibility
+-------------
+
+Celery-slack is tested against Celery versions 3.1, 4.0, and 4.1, across
+corresponding compatible versions of Python including 2.7, 3.3, 3.4, 3.5, 3.6.
+It may or may not work on other versions of Celery and/or Python.
 
 Documentation
 -------------
