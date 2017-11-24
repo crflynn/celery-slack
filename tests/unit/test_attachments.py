@@ -113,7 +113,7 @@ def test_celery_shutdown_attachment(
         # beat_schedule,
         # beat_show_full_task_path,
         ):
-    """Test the celery startup attachment."""
+    """Test the celery shutdown attachment."""
     these_options = locals()
     these_options.pop("default_options")
     options = get_options(default_options, **these_options)
@@ -150,7 +150,7 @@ def test_task_prerun_attachment(
         args,
         kwargs
         ):
-    """Test the celery startup attachment."""
+    """Test the task prerun attachment."""
     these_options = locals()
     these_options.pop("default_options")
     these_options.pop("task_id")
@@ -213,7 +213,7 @@ def test_task_failure_attachment(
         kwargs,
         einfo
         ):
-    """Test the celery startup attachment."""
+    """Test the task failure attachment."""
     these_options = locals()
     these_options.pop("default_options")
     these_options.pop("task_name")
@@ -301,7 +301,7 @@ def test_task_success_attachment(
         args,
         kwargs
         ):
-    """Test the celery startup attachment."""
+    """Test the task success attachment."""
     these_options = locals()
     these_options.pop("default_options")
     these_options.pop("task_name")
