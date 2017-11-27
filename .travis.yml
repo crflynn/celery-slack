@@ -15,6 +15,7 @@ env:
   - CELERY_VERSION=4.1
 # command to install dependencies
 install:
+  - pip install -r requirements-dev.txt
   - pip install celery==$CELERY_VERSION requests ephem
 # command to run tests
 script: pytest
