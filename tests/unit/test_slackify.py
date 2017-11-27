@@ -23,7 +23,7 @@ def test_slackify_webhook_exception(
     if options["webhook"] is None:
         with pytest.raises(MissingWebhookException):
             app = Celery('schedule')
-            app.config_from_object('tests.celery.config')
+            app.config_from_object('tests.celeryapp.config')
             slack_app = Slackify(app, **options)
         return
 
@@ -43,7 +43,7 @@ def test_slackify_task_filtration_exception(
     if include_tasks and exclude_tasks:
         with pytest.raises(TaskFiltrationException):
             app = Celery('schedule')
-            app.config_from_object('tests.celery.config')
+            app.config_from_object('tests.celeryapp.config')
             slack_app = Slackify(app, **options)
 
 
@@ -55,7 +55,7 @@ def test_invalid_color_exception(webhook, default_options):
     options["slack_beat_init_color"] = 'asdf'
     with pytest.raises(InvalidColorException):
         app = Celery('schedule')
-        app.config_from_object('tests.celery.config')
+        app.config_from_object('tests.celeryapp.config')
         slack_app = Slackify(app, **options)
 
     # Doesn't raise with valid color.
@@ -70,7 +70,7 @@ def test_failure_only_patching(webhook, failures_only, default_options):
     options = get_options(default_options, **these_options)
 
     app = Celery('schedule')
-    app.config_from_object('tests.celery.config')
+    app.config_from_object('tests.celeryapp.config')
 
     pre_patch_id = id(app.Task.on_success)
     slack_app = Slackify(app, **options)

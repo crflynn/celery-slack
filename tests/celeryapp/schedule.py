@@ -2,8 +2,10 @@
 import datetime
 import pytz
 
+from celery import __version__ as CELERY_VERSION
 from celery.schedules import crontab
-from celery.schedules import solar
+if CELERY_VERSION >= '4.0.0':
+    from celery.schedules import solar
 
 
 TZ = pytz.timezone('UTC')
@@ -72,10 +74,11 @@ def get_schedule():
                 minute=(now.minute + 1) % 60,
                 day_of_month=(now.day),
                 month_of_year=now.month))
-    add_tasks_to_schedule(
-        solar_tasks,
-        solar('sunset', 50, 50)
-    )
+    if CELERY_VERSION >= '4.0.0':
+        add_tasks_to_schedule(
+            solar_tasks,
+            solar('sunset', 50, 50)
+        )
     add_tasks_to_schedule(
         timedelta_tasks,
         datetime.timedelta(5)
