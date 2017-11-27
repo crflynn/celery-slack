@@ -1,10 +1,17 @@
 """Test slack functions."""
+import os
 import pytest
 
 import celery_slack
 from celery_slack.slack import post_to_slack
 from celery_slack.slack import post_warning_to_slack
-from ..secret import slack_webhook
+
+# local or travis
+try:
+    from ..secret import slack_webhook
+except:
+    slack_webhook = os.environ['SLACK_WEBHOOK']
+
 
 
 SAMPLE_ATTACHMENT = {

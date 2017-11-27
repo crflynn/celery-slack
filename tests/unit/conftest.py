@@ -13,7 +13,12 @@ import pytest
 from celery_slack.slack import SESSION
 from celery_slack import DEFAULT_OPTIONS
 from tests.celery.schedule import get_schedule
-from ..secret import slack_webhook
+
+# local or travis
+try:
+    from ..secret import slack_webhook
+except:
+    slack_webhook = os.environ['SLACK_WEBHOOK']
 
 
 CASSETTE_LIBRARY = 'tests/cassettes'
