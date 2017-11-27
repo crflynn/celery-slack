@@ -13,7 +13,6 @@ except:
     slack_webhook = os.environ['SLACK_WEBHOOK']
 
 
-
 SAMPLE_ATTACHMENT = {
     "attachments": [
         {
