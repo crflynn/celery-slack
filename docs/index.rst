@@ -10,6 +10,8 @@ celery-slack
 
 .. image:: https://img.shields.io/readthedocs/celery-slack.svg
 
+.. image:: https://img.shields.io/codecov/c/github/codecov/example-python.svg
+
 .. image:: https://img.shields.io/pypi/v/celery-slack.svg
 
 .. image:: https://img.shields.io/pypi/pyversions/celery-slack.svg
