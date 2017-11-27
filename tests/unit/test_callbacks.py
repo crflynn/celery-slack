@@ -19,7 +19,7 @@ def test_slack_beat_init_callback(
     these_options.pop("mocker")
     options = get_options(default_options, **these_options)
     mocked_post_to_slack = mocker.patch('celery_slack.callbacks.post_to_slack')
-    slack_beat_init(**options)
+    slack_beat_init(**options)()
     assert mocked_post_to_slack.called
 
 
@@ -34,7 +34,7 @@ def test_slack_celery_startup_callback(
     these_options.pop("mocker")
     options = get_options(default_options, **these_options)
     mocked_post_to_slack = mocker.patch('celery_slack.callbacks.post_to_slack')
-    slack_celery_startup(**options)
+    slack_celery_startup(**options)()
     assert mocked_post_to_slack.called
 
 
@@ -49,7 +49,7 @@ def test_slack_celery_shutdown_callback(
     these_options.pop("mocker")
     options = get_options(default_options, **these_options)
     mocked_post_to_slack = mocker.patch('celery_slack.callbacks.post_to_slack')
-    slack_celery_shutdown(**options)
+    slack_celery_shutdown(**options)()
     assert mocked_post_to_slack.called
 
 
@@ -73,7 +73,7 @@ def test_slack_task_prerun_callback(
     these_options.pop("mocker")
     options = get_options(default_options, **these_options)
     mocked_post_to_slack = mocker.patch('celery_slack.callbacks.post_to_slack')
-    slack_task_prerun(task_id, task, args, kwargs, **options)
+    slack_task_prerun(**options)(task_id, task, args, kwargs)
     if show_task_prerun:
         assert mocked_post_to_slack.called
     else:
@@ -116,7 +116,7 @@ def test_slack_task_success_callback(
             pass
 
     # need prerun for stopwatch
-    slack_task_prerun(task_id, task, args, kwargs, **options)
+    slack_task_prerun(**options)(task_id, task, args, kwargs)
 
     cbt = CallbackTester()
     cbt.callback(retval, task_id, args, kwargs)
@@ -168,7 +168,7 @@ def test_slack_task_failure_callback(
             pass
 
     # need prerun for stopwatch
-    slack_task_prerun(task_id, task, args, kwargs, **options)
+    slack_task_prerun(**options)(task_id, task, args, kwargs)
 
     cbt = CallbackTester()
     cbt.callback(exc, task_id, args, kwargs, einfo)

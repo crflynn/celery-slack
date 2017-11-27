@@ -9,10 +9,12 @@ celerybeat-schedule
 
 # coverage
 .coverage
+.coverage.*
 _cov
 
 # python
 __pycache__
+*.pyc
 
 # packaging
 *.egg-info

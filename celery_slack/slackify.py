@@ -1,5 +1,4 @@
 """Slackify celery."""
-from functools import partial
 import re
 
 from celery.signals import beat_init
@@ -87,23 +86,23 @@ class Slackify(object):
         """
         # Beat
         beat_init.connect(
-            partial(slack_beat_init, **self.options),
+            slack_beat_init(**self.options),
             weak=False
         )
 
         # Celery
         celeryd_init.connect(
-            partial(slack_celery_startup, **self.options),
+            slack_celery_startup(**self.options),
             weak=False
         )
         worker_shutdown.connect(
-            partial(slack_celery_shutdown, **self.options),
+            slack_celery_shutdown(**self.options),
             weak=False
         )
 
         # Task
         task_prerun.connect(
-            partial(slack_task_prerun, **self.options),
+            slack_task_prerun(**self.options),
             weak=False
         )
 

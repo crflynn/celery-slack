@@ -63,7 +63,8 @@ def test_invalid_color_exception(webhook, default_options):
     slack_app = Slackify(app, **options)  # noqa F481
 
 
-def test_failure_only_patching(webhook, failures_only, default_options):
+def test_failure_only_patching(webhook, failures_only,
+                               default_options, mocker):
     """Test failures_only option omits patching on_success method."""
     these_options = locals()
     these_options.pop('default_options')
@@ -72,12 +73,13 @@ def test_failure_only_patching(webhook, failures_only, default_options):
     app = Celery('schedule')
     app.config_from_object('tests.celeryapp.config')
 
-    pre_patch_id = id(app.Task.on_success)
+    mocked_task_success = \
+        mocker.patch('celery_slack.slackify.slack_task_success')
+
     slack_app = Slackify(app, **options)
-    post_patch_id = id(app.Task.on_success)
 
     # If patching skipped ensure the method id is the same.
     if failures_only:
-        assert pre_patch_id == post_patch_id
+        assert not mocked_task_success.called
     else:
-        assert pre_patch_id != post_patch_id
+        assert mocked_task_success.called

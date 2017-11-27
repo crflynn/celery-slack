@@ -15,7 +15,7 @@ logging.basicConfig(level='INFO')
 schedule = get_schedule()
 
 app = Celery('schedule')
-app.config_from_object('tests.celery.config')
+app.config_from_object('tests.celeryapp.config')
 
 # options = {
 #     "flower_base_url": "https://flower.example.com",

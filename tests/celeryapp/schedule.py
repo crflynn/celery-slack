@@ -13,30 +13,30 @@ TZ = pytz.timezone('UTC')
 # Launch one time on restart
 
 one_timers = {
-    'tests.celery.tasks.successful_task': {
+    'tests.celeryapp.tasks.successful_task': {
         'args': [1, 2],
         'kwargs': {},
     },
-    'tests.celery.tasks.unsuccessful_task': {
+    'tests.celeryapp.tasks.unsuccessful_task': {
         'args': [1, 2],
         'kwargs': {},
     },
 }
 
 solar_tasks = {
-    'tests.celery.tasks.solar_task': {
+    'tests.celeryapp.tasks.solar_task': {
         'args': [1, 2],
         'kwargs': {},
     },
 }
 timedelta_tasks = {
-    'tests.celery.tasks.timedelta_task': {
+    'tests.celeryapp.tasks.timedelta_task': {
         'args': [1, 2],
         'kwargs': {},
     },
 }
 number_tasks = {
-    'tests.celery.tasks.number_task': {
+    'tests.celeryapp.tasks.number_task': {
         'args': [1, 2],
         'kwargs': {},
     },

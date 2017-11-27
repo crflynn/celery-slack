@@ -53,9 +53,9 @@ def test_beat_init_attachment(
         if use_fixed_width:
             assert "`" in message
         if beat_show_full_task_path:
-            assert "tests.celery.tasks.successful_task " in message
+            assert "tests.celeryapp.tasks.successful_task " in message
         else:
-            assert "tests.celery.tasks.successful_task " not in message
+            assert "tests.celeryapp.tasks.successful_task " not in message
             assert "tasks.successful_task" in message
     else:
         assert "with schedule" not in message

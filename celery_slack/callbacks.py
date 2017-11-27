@@ -11,20 +11,24 @@ from .attachments import add_task_to_stopwatch
 from .slack import post_to_slack
 
 
-def slack_task_prerun(task_id, task, args, kwargs, **cbkwargs):
-    """Initialize the task timer.
+def slack_task_prerun(**cbkwargs):
+    """Return the task_prerun callback."""
+    def slack_task_prerun_callback(task_id, task, args, kwargs, **skwargs):
+        """Initialize the task timer.
 
-    This function connects to the task_prerun signal in order to be able to
-    output execution time on tasks.
-    """
-    add_task_to_stopwatch(task_id)
+        This function connects to the task_prerun signal in order to be able to
+        output execution time on tasks.
+        """
+        add_task_to_stopwatch(task_id)
 
-    if cbkwargs["show_task_prerun"]:
+        if cbkwargs["show_task_prerun"]:
 
-        attachment = get_task_prerun_attachment(
-            task_id, task, args, kwargs, **cbkwargs)
+            attachment = get_task_prerun_attachment(
+                task_id, task, args, kwargs, **cbkwargs)
 
-        post_to_slack(cbkwargs["webhook"], ' ', attachment)
+            post_to_slack(cbkwargs["webhook"], ' ', attachment)
+
+    return slack_task_prerun_callback
 
 
 def slack_task_success(**cbkwargs):
@@ -75,31 +79,43 @@ def slack_task_failure(**cbkwargs):
     return wrapper
 
 
-def slack_celery_startup(**kwargs):
-    """Post a message to slack when celery starts.
+def slack_celery_startup(**cbkwargs):
+    """Return the celery_startup callback."""
+    def slack_celery_startup_callback(**kwargs):
+        """Post a message to slack when celery starts.
 
-    This function is connected to the celeryd_init signal.
-    """
-    attachment = get_celery_startup_attachment(**kwargs)
+        This function is connected to the celeryd_init signal.
+        """
+        attachment = get_celery_startup_attachment(**cbkwargs)
 
-    post_to_slack(kwargs["webhook"], ' ', attachment)
+        post_to_slack(cbkwargs["webhook"], ' ', attachment)
 
-
-def slack_celery_shutdown(**kwargs):
-    """Post a message to slack when celery starts.
-
-    This function is connected to the worker_shutdown signal.
-    """
-    attachment = get_celery_shutdown_attachment(**kwargs)
-
-    post_to_slack(kwargs["webhook"], ' ', attachment)
+    return slack_celery_startup_callback
 
 
-def slack_beat_init(**kwargs):
-    """Post a message to slack when celery starts.
+def slack_celery_shutdown(**cbkwargs):
+    """Return the celery_shutdown callback."""
+    def slack_celery_shutdown_callback(**kwargs):
+        """Post a message to slack when celery starts.
 
-    This function is connected to the beat_init signal.
-    """
-    attachment = get_beat_init_attachment(**kwargs)
+        This function is connected to the worker_shutdown signal.
+        """
+        attachment = get_celery_shutdown_attachment(**cbkwargs)
 
-    post_to_slack(kwargs["webhook"], ' ', attachment)
+        post_to_slack(cbkwargs["webhook"], ' ', attachment)
+
+    return slack_celery_shutdown_callback
+
+
+def slack_beat_init(**cbkwargs):
+    """Return the beat_init callback."""
+    def slack_beat_init_callback(**kwargs):
+        """Post a message to slack when celery starts.
+
+        This function is connected to the beat_init signal.
+        """
+        attachment = get_beat_init_attachment(**cbkwargs)
+
+        post_to_slack(cbkwargs["webhook"], ' ', attachment)
+
+    return slack_beat_init_callback
