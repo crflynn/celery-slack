@@ -13,7 +13,7 @@ celery-slack
 
 .. |rtd| image:: https://img.shields.io/readthedocs/celery-slack.svg
 
-.. |codecov| image:: https://img.shields.io/codecov/c/github/codecov/example-python.svg
+.. |codecov| image:: https://codecov.io/gh/crflynn/celery-slack/branch/master/graphs/badge.svg
 
 .. |pypi| image:: https://img.shields.io/pypi/v/celery-slack.svg
 
