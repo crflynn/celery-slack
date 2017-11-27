@@ -1,5 +1,8 @@
 # celery-slack
 
+![](https://img.shields.io/travis/crflynn/celery-slack.svg) ![](https://img.shields.io/readthedocs/celery-slack.svg) ![](https://img.shields.io/pypi/v/celery-slack.svg) ![](https://img.shields.io/pypi/pyversions/celery-slack.svg)
+
+
 Celery-slack is a [Celery](http://docs.celeryproject.org/en/latest/index.html)
 extension that posts messages to a Slack channel
 regarding a Celery application, its beat schedule, and its worker task
