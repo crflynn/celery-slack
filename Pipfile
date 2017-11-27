@@ -9,7 +9,6 @@ name = "pypi"
 
 celery = "*"
 requests = "*"
-redis = "*"
 ephem = "*"
 
 
@@ -26,3 +25,4 @@ sphinx = "*"
 sphinx-autobuild = "*"
 sphinx-rtd-theme = "*"
 tox-pyenv = "*"
+redis = "*"
