@@ -50,7 +50,7 @@ Compatibility
 -------------
 
 Celery-slack is tested against Celery versions 3.1, 4.0, and 4.1, across
-corresponding compatible versions of Python including 3.3, 3.4, 3.5, 3.6.
+corresponding compatible versions of Python including 2.7, 3.3, 3.4, 3.5, 3.6.
 It may or may not work on other versions of Celery and/or Python.
 
 Documentation
