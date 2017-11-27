@@ -5,8 +5,11 @@ import re
 import socket
 import time
 
+import celery.__version__ as CELERY_VERSION
 from celery.schedules import crontab
-from celery.schedules import solar
+
+if CELERY_VERSION >= '4.0.0':
+    from celery.schedules import solar
 
 
 STOPWATCH = {}
@@ -303,7 +306,7 @@ def schedule_to_string(schedule):
     """Transform a crontab, solar, or timedelta to a string."""
     if isinstance(schedule, crontab):
         return str(schedule)[10:-15]
-    elif isinstance(schedule, solar):
+    elif CELERY_VERSION >= '4.0.0' and isinstance(schedule, solar):
         return str(schedule)[8:-1]
     elif isinstance(schedule, timedelta):
         return 'every ' + str(schedule)

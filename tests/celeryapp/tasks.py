@@ -1,6 +1,6 @@
 """Test tasks."""
 # flake8: noqa E501
-from tests.celery.celery import app
+from tests.celeryapp.celeryapp import app
 
 
 @app.task

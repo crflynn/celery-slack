@@ -6,8 +6,10 @@ import os
 import uuid
 
 import betamax
+import celery.__version__ as CELERY_VERSION
 from celery.schedules import crontab
-from celery.schedules import solar
+if CELERY_VERSION >= '4.0.0':
+    from celery.schedules import solar
 import pytest
 
 from celery_slack.slack import SESSION
@@ -79,7 +81,7 @@ def slack_attachment(request):
 
 @pytest.fixture(params=[
     crontab(hour=12, minute=12),
-    solar('sunset', 50, 50),
+    solar('sunset', 50, 50) if CELERY_VERSION > '4.0.0' else 9000,
     timedelta(5),
     3000
 ])
