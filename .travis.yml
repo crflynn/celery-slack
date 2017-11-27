@@ -1,25 +1,5 @@
 language: python
 # python versions
-python:
-  - "2.7"
-  - "3.2"
-  - "3.3"
-  - "3.4"
-  - "3.5"
-  - "3.6"
-# celery versions
-env:
-  - CELERY_VERSION=3.0
-  - CELERY_VERSION=3.1
-  - CELERY_VERSION=4.0
-  - CELERY_VERSION=4.1
-# command to install dependencies
-install:
-  - pip install -r requirements-dev.txt
-  - pip install celery==$CELERY_VERSION requests ephem
-# command to run tests
-script: pytest
-# combinations to include
 matrix:
   include:
   - python: "2.7"
@@ -44,3 +24,10 @@ matrix:
     env: CELERY_VERSION=4.1
   - python: "3.6"
     env: CELERY_VERSION=4.1
+# command to install dependencies
+install:
+  - pip install -r requirements-dev.txt
+  - pip install celery==$CELERY_VERSION requests ephem
+# command to run tests
+script: pytest
+# combinations to include
