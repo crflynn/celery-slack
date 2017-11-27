@@ -14,7 +14,7 @@ import pytest
 
 from celery_slack.slack import SESSION
 from celery_slack import DEFAULT_OPTIONS
-from tests.celery.schedule import get_schedule
+from tests.celeryapp.schedule import get_schedule
 
 # local or travis
 try:
