@@ -5,7 +5,7 @@ import re
 import socket
 import time
 
-import celery.__version__ as CELERY_VERSION
+from celery import __version__ as CELERY_VERSION
 from celery.schedules import crontab
 
 if CELERY_VERSION >= '4.0.0':

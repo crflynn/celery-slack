@@ -6,7 +6,7 @@ import os
 import uuid
 
 import betamax
-import celery.__version__ as CELERY_VERSION
+from celery import __version__ as CELERY_VERSION
 from celery.schedules import crontab
 if CELERY_VERSION >= '4.0.0':
     from celery.schedules import solar
