@@ -1,15 +1,18 @@
 celery-slack
 ============
 
-.. image:: https://img.shields.io/travis/crflynn/celery-slack.svg
+|travis| |rtd| |codecov| |pypi| |pyversions|
 
-.. image:: https://img.shields.io/readthedocs/celery-slack.svg
 
-.. image:: https://img.shields.io/codecov/c/github/codecov/example-python.svg
+.. |travis| image:: https://img.shields.io/travis/crflynn/celery-slack.svg
 
-.. image:: https://img.shields.io/pypi/v/celery-slack.svg
+.. |rtd| image:: https://img.shields.io/readthedocs/celery-slack.svg
 
-.. image:: https://img.shields.io/pypi/pyversions/celery-slack.svg
+.. |codecov| image:: https://img.shields.io/codecov/c/github/codecov/example-python.svg
+
+.. |pypi| image:: https://img.shields.io/pypi/v/celery-slack.svg
+
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/celery-slack.svg
 
 
 Celery-slack is a `Celery <http://docs.celeryproject.org/en/latest/index.html>`_
