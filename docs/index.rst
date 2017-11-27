@@ -65,7 +65,3 @@ Documentation
    slack
    usage
    notes
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
