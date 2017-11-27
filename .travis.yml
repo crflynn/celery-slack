@@ -28,6 +28,9 @@ matrix:
 install:
   - pip install -r requirements-dev.txt
   - pip install celery==$CELERY_VERSION requests ephem
+  - pip install codecov
 # command to run tests
 script: pytest
 # combinations to include
+after_success:
+  - codecov
