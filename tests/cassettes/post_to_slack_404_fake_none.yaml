@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: '{"text": " "}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://hooks.slack.com/services/SLACK_WEBHOOK
+  response:
+    body: {string: No team}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Length: ['7']
+      Content-Type: [text/html]
+      Date: ['Tue, 28 Nov 2017 23:43:56 GMT']
+      Referrer-Policy: [no-referrer]
+      Server: [Apache]
+      Strict-Transport-Security: [max-age=31536000; includeSubDomains; preload]
+      Via: [1.1 ee4ba2e7eed09e7f30c6ffa712f4bee8.cloudfront.net (CloudFront)]
+      X-Amz-Cf-Id: [d5DR78tQOFyKY3Jv_KSbaYP1RzcDwfEyxCji0WipnEh0McWG4mh9TQ==]
+      X-Cache: [Error from cloudfront]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Slack-Backend: [h]
+    status: {code: 404, message: Not Found}
+version: 1

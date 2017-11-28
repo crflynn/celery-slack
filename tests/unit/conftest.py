@@ -5,14 +5,13 @@ from datetime import timedelta
 import os
 import uuid
 
-import betamax
 from celery import __version__ as CELERY_VERSION
 from celery.schedules import crontab
 if CELERY_VERSION >= '4.0.0':
     from celery.schedules import solar
 import pytest
+import vcr
 
-from celery_slack.slack import SESSION
 from celery_slack import DEFAULT_OPTIONS
 from tests.celeryapp.schedule import get_schedule
 
@@ -28,14 +27,19 @@ CASSETTE_LIBRARY = 'tests/cassettes'
 if not os.path.exists(CASSETTE_LIBRARY):
     os.makedirs(CASSETTE_LIBRARY)
 
-with betamax.Betamax.configure() as config:
-    config.cassette_library_dir = CASSETTE_LIBRARY
-    config.define_cassette_placeholder(
-        '<SLACK_WEBHOOK>',
-        slack_webhook
-    )
 
-RECORDER = betamax.Betamax(SESSION, cassette_library_dir=CASSETTE_LIBRARY)
+def scrub_login_request(request):
+    """Remove webhooks from cassettes."""
+    request.uri = 'https://hooks.slack.com/services/SLACK_WEBHOOK'
+    return request
+
+
+my_vcr = vcr.VCR(
+    before_record_request=scrub_login_request,
+)
+
+
+RECORDER = my_vcr
 
 
 @pytest.fixture

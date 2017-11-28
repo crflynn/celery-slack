@@ -6,7 +6,6 @@ import requests
 from requests.exceptions import RequestException
 
 
-SESSION = requests.Session()
 RETRY_AFTER = 0
 RATE_LIMITED = False
 
@@ -28,14 +27,16 @@ def post_to_slack(webhook, text=' ', attachment=None):
     if attachment is not None:
         payload.update(attachment)
     try:
-        response = SESSION.post(webhook, json=payload)
+        response = None
+        response = requests.post(webhook, json=payload)
         response.raise_for_status()
     except RequestException as exc:
-        RETRY_AFTER = \
-            time.time() + int(response.headers.get("Retry-After", 0))
-        RATE_LIMITED = True
         logging.error("Unable to post to Slack; {e}: {msg}".format(
             e=type(exc).__name__, msg=str(exc)))
+        if response:
+            RETRY_AFTER = \
+                time.time() + int(response.headers.get("Retry-After", 0))
+            RATE_LIMITED = True
 
     return response
 
@@ -67,7 +68,8 @@ def post_warning_to_slack(webhook, text, attachment=None):
     payload = {'text': ''}
     payload.update(attachment)
     try:
-        response = SESSION.post(webhook, json=payload)
+        response = None
+        response = requests.post(webhook, json=payload)
         response.raise_for_status()
     except RequestException as exc:
         logging.error("Unable to post to Slack; {e}: {msg}".format(

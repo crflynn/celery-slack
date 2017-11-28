@@ -36,7 +36,7 @@ SAMPLE_ATTACHMENT = {
 def test_post_to_slack(test_webhook, slack_attachment, code, recorder,
                        cassette):
     """Test posting to slack."""
-    with recorder.use_cassette('post_to_slack_{code}_{name}'.format(
+    with recorder.use_cassette('tests/cassettes/post_to_slack_{code}_{name}.yaml'.format(  # noqa
             code=code,
             name=cassette)):
         response = post_to_slack(test_webhook, ' ', slack_attachment)
@@ -49,7 +49,7 @@ def test_post_to_slack(test_webhook, slack_attachment, code, recorder,
 ])
 def test_post_warning_to_slack(webhook, slack_attachment, recorder, cassette):
     """Test posting a rate limit warning to slack."""
-    with recorder.use_cassette('post_warning_to_slack_{attach}'.format(
+    with recorder.use_cassette('tests/cassettes/post_warning_to_slack_{attach}.yaml'.format(  # noqa
             attach=cassette)):
         response = post_warning_to_slack(webhook, ' ', slack_attachment)
     assert response.status_code == 200
