@@ -18,7 +18,7 @@ from tests.celeryapp.schedule import get_schedule
 # local or travis
 try:
     from ..secret import slack_webhook
-except:
+except Exception:
     slack_webhook = os.environ['SLACK_WEBHOOK']
 
 
