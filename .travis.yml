@@ -8,8 +8,8 @@ matrix:
     env: CELERY_VERSION=4.0
   - python: "2.7"
     env: CELERY_VERSION=4.1
-  - python: "3.3"
-    env: CELERY_VERSION=3.1
+  # - python: "3.3"
+  #   env: CELERY_VERSION=3.1
   - python: "3.4"
     env: CELERY_VERSION=3.1
   - python: "3.4"
@@ -31,7 +31,7 @@ install:
   - if [[ $TRAVIS_PYTHON_VERSION == '2.7' || $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install responses; else pip install vcrpy; fi
   - pip install codecov
 # command to run tests
-script: python -m pytest
+script: pytest
 # combinations to include
 after_success:
   - codecov
