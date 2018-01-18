@@ -8,6 +8,7 @@ from requests.exceptions import RequestException
 
 RETRY_AFTER = 0
 RATE_LIMITED = False
+TIMEOUT = 1
 
 
 def post_to_slack(webhook, text=' ', attachment=None):
@@ -28,7 +29,7 @@ def post_to_slack(webhook, text=' ', attachment=None):
         payload.update(attachment)
     try:
         response = None
-        response = requests.post(webhook, json=payload)
+        response = requests.post(webhook, json=payload, timeout=TIMEOUT)
         response.raise_for_status()
     except RequestException as exc:
         logging.error("Unable to post to Slack; {e}: {msg}".format(
@@ -69,7 +70,7 @@ def post_warning_to_slack(webhook, text, attachment=None):
     payload.update(attachment)
     try:
         response = None
-        response = requests.post(webhook, json=payload)
+        response = requests.post(webhook, json=payload, timeout=TIMEOUT)
         response.raise_for_status()
     except RequestException as exc:
         logging.error("Unable to post to Slack; {e}: {msg}".format(

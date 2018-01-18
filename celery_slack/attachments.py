@@ -268,7 +268,7 @@ def get_beat_init_attachment(**kwargs):
         message += ' *with schedule:*'
 
         sched = []
-        for task in beat_schedule:
+        for task in sorted(beat_schedule):
             if kwargs["beat_show_full_task_path"]:
                 sched.append(
                     task + BEAT_DELIMITER +

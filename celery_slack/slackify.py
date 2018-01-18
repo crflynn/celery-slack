@@ -32,7 +32,7 @@ DEFAULT_OPTIONS = {
     "show_task_kwargs": True,
     "show_task_exception_info": True,
     "show_task_return_value": True,
-    "show_task_prerun": True,
+    "show_task_prerun": False,
     "use_fixed_width": True,
     "include_tasks": None,
     "exclude_tasks": None,

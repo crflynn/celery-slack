@@ -123,9 +123,9 @@ def test_slack_task_success_callback(
 
     if ((exclude_tasks and task_name in exclude_tasks) or
             (include_tasks and task_name not in include_tasks)):
-        assert mocked_post_to_slack.call_count == 1
+        assert mocked_post_to_slack.call_count == 0
     else:
-        assert mocked_post_to_slack.call_count == 2
+        assert mocked_post_to_slack.call_count == 1
 
 
 def test_slack_task_failure_callback(
@@ -175,6 +175,6 @@ def test_slack_task_failure_callback(
 
     if ((exclude_tasks and task_name in exclude_tasks) or
             (include_tasks and task_name not in include_tasks)):
-        assert mocked_post_to_slack.call_count == 1
+        assert mocked_post_to_slack.call_count == 0
     else:
-        assert mocked_post_to_slack.call_count == 2
+        assert mocked_post_to_slack.call_count == 1

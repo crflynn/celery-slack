@@ -1,8 +1,9 @@
 """Pytest fixtures."""
-# flake8: noqa D103
+# flake8: noqa
 import copy
 from datetime import timedelta
 import os
+import platform
 import uuid
 
 from celery import __version__ as CELERY_VERSION
@@ -10,7 +11,6 @@ from celery.schedules import crontab
 if CELERY_VERSION >= '4.0.0':
     from celery.schedules import solar
 import pytest
-import vcr
 
 from celery_slack import DEFAULT_OPTIONS
 from tests.celeryapp.schedule import get_schedule
@@ -22,29 +22,32 @@ except:
     slack_webhook = os.environ['SLACK_WEBHOOK']
 
 
-CASSETTE_LIBRARY = 'tests/cassettes'
+PYTHON_VERSION = platform.python_version()
+PYTHON_VERSION_THRESHOLD = '3.4'
 
-if not os.path.exists(CASSETTE_LIBRARY):
-    os.makedirs(CASSETTE_LIBRARY)
+# Use vcrpy for python3.4 or higher, else use repsonses
+if PYTHON_VERSION >= PYTHON_VERSION_THRESHOLD:
+    import vcr
+    CASSETTE_LIBRARY = 'tests/cassettes'
 
+    if not os.path.exists(CASSETTE_LIBRARY):
+        os.makedirs(CASSETTE_LIBRARY)
 
-def scrub_login_request(request):
-    """Remove webhooks from cassettes."""
-    request.uri = 'https://hooks.slack.com/services/SLACK_WEBHOOK'
-    return request
+    def scrub_login_request(request):
+        """Remove webhooks from cassettes."""
+        request.uri = 'https://hooks.slack.com/services/SLACK_WEBHOOK'
+        return request
 
+    my_vcr = vcr.VCR(before_record_request=scrub_login_request)
+    RECORDER = my_vcr
 
-my_vcr = vcr.VCR(
-    before_record_request=scrub_login_request,
-)
-
-
-RECORDER = my_vcr
-
-
-@pytest.fixture
-def recorder():
-    return RECORDER
+    @pytest.fixture
+    def recorder():
+        return RECORDER
+else:
+    @pytest.fixture
+    def recorder():
+        return None
 
 
 @pytest.fixture

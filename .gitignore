@@ -29,3 +29,9 @@ dist/
 
 # docs
 _build
+
+# redis
+dump.rdb
+
+# macosx
+.DS_Store

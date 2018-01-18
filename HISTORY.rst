@@ -1,6 +1,14 @@
 Release History
 ---------------
 
+0.1.4 (2018-01-17)
+~~~~~~~~~~~~~~~~~~
+
+* Change default behavior of task prerun messages to false
+* Add sorted tasks for beat init message with beat schedule
+* Add 1 second timeout to Slack post requests
+* Use the responses library to mock requests in 2.7 and 3.3 tests
+
 0.1.3 (2017-11-28)
 ~~~~~~~~~~~~~~~~~~
 
