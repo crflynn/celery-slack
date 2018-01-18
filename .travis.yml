@@ -31,7 +31,7 @@ install:
   - if [[ $TRAVIS_PYTHON_VERSION == '2.7' || $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install responses; else pip install vcrpy; fi
   - pip install codecov
 # command to run tests
-script: pytest
+script: python -m pytest
 # combinations to include
 after_success:
   - codecov
