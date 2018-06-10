@@ -1,6 +1,12 @@
 Release History
 ---------------
 
+0.2.0 (2018-06-10)
+~~~~~~~~~~~~~~~~~~
+
+* Add options to disable celery startup/shutdown messages
+* Add option to disable beat messages
+
 0.1.4 (2018-01-17)
 ~~~~~~~~~~~~~~~~~~
 
