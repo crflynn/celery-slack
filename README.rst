@@ -100,7 +100,7 @@ extension:
         "show_task_prerun": True,
         "show_startup": True,
         "show_shutdown": True,
-        "show_beat_schedule": True,
+        "show_beat": True,
         "use_fixed_width": True,
         "include_tasks": None,
         "exclude_tasks": None,
