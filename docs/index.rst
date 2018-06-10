@@ -36,10 +36,11 @@ execution. Optionally, those messages can link to
 Prerequisites
 -------------
 
-To use this package you will need a Slack App that is part of your
-organization's Slack workspace. You can create an App from
-`this page <https://api.slack.com/apps>`_. This App should have an incoming
-webhook registered to one of your Slack channels. See
+To use this package you will need an incoming webhook associated with a Slack
+channel. You can use Slack's
+own `incoming webhook integration <https://my.slack.com/services/new/incoming-webhook/>`_
+or create a Slack application from `this page <https://api.slack.com/apps>`_
+with an incoming webhook registered to one of your Slack channels. See
 `Slack incoming webhooks <https://api.slack.com/incoming-webhooks>`_ for more
 information.
 
