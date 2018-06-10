@@ -1,7 +1,26 @@
 Configuring Slack
 =================
 
-Create a Slack App and Webhook
+To use ``celery-slack`` you will need a **slack webhook**. You can create one
+using one of the following two methods.
+
+
+Using the Incoming Webhooks integration
+---------------------------------------
+
+Slack provides their own `incoming webhooks <https://my.slack.com/services/new/incoming-webhook/>`_
+integration that you can use to create a custom webhook to use with your
+deployment of Celery.
+
+.. image:: images/incoming_webhooks_integration.png
+
+You can customize the name and icon of the webhook messages on this screen.
+Here is
+a `logo <https://upload.wikimedia.org/wikipedia/commons/1/19/Celery_logo.png>`_
+you can use for the webhook messages' icon.
+
+
+Using a Slack App and Webhook
 ------------------------------
 
 In order to use celery-slack, you will need to create a Slack App for your
@@ -31,7 +50,7 @@ the webhook that you will use when setting up ``celery-slack``.
 
 
 Slack API Usage Warnings
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Note that Slack has `rate limits for incoming webhook requests <https://api.slack.com/docs/rate-limits>`_
 which is more or less 1 request per second.
