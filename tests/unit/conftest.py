@@ -224,6 +224,21 @@ def show_task_prerun(request):
 
 
 @pytest.fixture(params=[True, False])
+def show_startup(request):
+    return request.param
+
+
+@pytest.fixture(params=[True, False])
+def show_shutdown(request):
+    return request.param
+
+
+@pytest.fixture(params=[True, False])
+def show_beat(request):
+    return request.param
+
+
+@pytest.fixture(params=[True, False])
 def use_fixed_width(request):
     return request.param
 

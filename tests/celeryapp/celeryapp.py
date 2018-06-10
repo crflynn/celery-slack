@@ -27,6 +27,9 @@ options = {
     "beat_schedule": schedule,
     "show_task_prerun": True,
     # "failures_only": True,
+    # "show_startup": False,
+    # "show_shutdown": False,
+    # "show_beat": False,
 }
 
 # logging.info('Creating celery-slack object.')

@@ -83,3 +83,63 @@ def test_failure_only_patching(webhook, failures_only,
         assert not mocked_task_success.called
     else:
         assert mocked_task_success.called
+
+
+def test_show_beat_option(webhook, show_beat, default_options, mocker):
+    """Test the show_startup option."""
+    these_options = locals()
+    these_options.pop('default_options')
+    options = get_options(default_options, **these_options)
+
+    app = Celery('schedule')
+    app.config_from_object('tests.celeryapp.config')
+
+    mocked_slack_beat_init = \
+        mocker.patch('celery_slack.slackify.slack_beat_init')
+
+    slack_app = Slackify(app, **options)
+
+    if show_beat:
+        assert mocked_slack_beat_init.called
+    else:
+        assert not mocked_slack_beat_init.called
+
+
+def test_show_startup_option(webhook, show_startup, default_options, mocker):
+    """Test the show_startup option."""
+    these_options = locals()
+    these_options.pop('default_options')
+    options = get_options(default_options, **these_options)
+
+    app = Celery('schedule')
+    app.config_from_object('tests.celeryapp.config')
+
+    mocked_slack_celery_startup = \
+        mocker.patch('celery_slack.slackify.slack_celery_startup')
+
+    slack_app = Slackify(app, **options)
+
+    if show_startup:
+        assert mocked_slack_celery_startup.called
+    else:
+        assert not mocked_slack_celery_startup.called
+
+
+def test_show_shutdown_option(webhook, show_shutdown, default_options, mocker):
+    """Test the show_startup option."""
+    these_options = locals()
+    these_options.pop('default_options')
+    options = get_options(default_options, **these_options)
+
+    app = Celery('schedule')
+    app.config_from_object('tests.celeryapp.config')
+
+    mocked_slack_celery_shutdown = \
+        mocker.patch('celery_slack.slackify.slack_celery_shutdown')
+
+    slack_app = Slackify(app, **options)
+
+    if show_shutdown:
+        assert mocked_slack_celery_shutdown.called
+    else:
+        assert not mocked_slack_celery_shutdown.called

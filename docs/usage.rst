@@ -52,6 +52,9 @@ extension:
        "show_task_exception_info": True,
        "show_task_return_value": True,
        "show_task_prerun": True,
+       "show_startup": True,
+       "show_shutdown": True,
+       "show_beat": True,
        "use_fixed_width": True,
        "include_tasks": None,
        "exclude_tasks": None,
@@ -89,6 +92,9 @@ Most of the options are self explanatory, but here are some additional details:
 * **show_task_exception_info**: Show the traceback for failed tasks
 * **show_task_return_value**: Show the return value of a successful task
 * **show_task_prerun**: Post messages at start of task execution
+* **show_startup**: Post message when celery starts
+* **show_shutdown**: Post message when celery stops
+* **show_beat**: Post message when beat starts
 * **use_fixed_width**: Use slack fixed width formatting for args, kwargs,
   retval, and exception info
 * **include_tasks**: A list of task paths to include. If used, post task

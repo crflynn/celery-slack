@@ -33,6 +33,9 @@ DEFAULT_OPTIONS = {
     "show_task_exception_info": True,
     "show_task_return_value": True,
     "show_task_prerun": False,
+    "show_startup": True,
+    "show_shutdown": True,
+    "show_beat": True,
     "use_fixed_width": True,
     "include_tasks": None,
     "exclude_tasks": None,
@@ -85,20 +88,23 @@ class Slackify(object):
         Since we are creating partials here, the weak arg must be False.
         """
         # Beat
-        beat_init.connect(
-            slack_beat_init(**self.options),
-            weak=False
-        )
+        if self.options["show_beat"]:
+            beat_init.connect(
+                slack_beat_init(**self.options),
+                weak=False
+            )
 
         # Celery
-        celeryd_init.connect(
-            slack_celery_startup(**self.options),
-            weak=False
-        )
-        worker_shutdown.connect(
-            slack_celery_shutdown(**self.options),
-            weak=False
-        )
+        if self.options["show_startup"]:
+            celeryd_init.connect(
+                slack_celery_startup(**self.options),
+                weak=False
+            )
+        if self.options["show_shutdown"]:
+            worker_shutdown.connect(
+                slack_celery_shutdown(**self.options),
+                weak=False
+            )
 
         # Task
         task_prerun.connect(
