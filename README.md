@@ -9,7 +9,7 @@ regarding a Celery application, its beat schedule, and its worker task
 execution. Optionally those messages can link to
 [Flower](http://flower.readthedocs.io/en/latest/) task pages.
 
-![celery-slack](https://i.imgur.com/fDkivP8.png)
+<img src="https://raw.githubusercontent.com/crflynn/celery-slack/master/docs/images/celery-slack.png" width="80%">
 
 ## Prerequisites
 
