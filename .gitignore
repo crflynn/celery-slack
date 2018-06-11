@@ -6,6 +6,7 @@ celerybeat-schedule
 
 # pytest
 .cache
+.pytest_cache/
 
 # coverage
 .coverage
