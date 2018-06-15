@@ -5,6 +5,7 @@ import re
 import socket
 import time
 
+from billiard.process import current_process
 from celery import __version__ as CELERY_VERSION
 from celery.schedules import crontab
 
@@ -302,14 +303,23 @@ def get_beat_init_attachment(**kwargs):
     return attachment
 
 
+processes = {
+    "MainProcess": "Celery",
+    "Beat": "Beat"
+}
+
+
 def get_broker_disconnect_attachment(**kwargs):
     """Create the slack message attachment for broker disconnection."""
     if kwargs["show_celery_hostname"]:
-        message = "*Celery could not connect to broker on {}.*".format(
-            socket.gethostname()
+        message = "*{process} could not connect to broker on {host}.*".format(
+            process=processes.get(current_process()._name, ""),
+            host=socket.gethostname()
         )
     else:
-        message = "*Celery could not connect to broker.*"
+        message = "*{process} could not connect to broker.*".format(
+            process=processes.get(current_process()._name, ""),
+        )
 
     attachment = {
         "attachments": [
@@ -329,11 +339,14 @@ def get_broker_disconnect_attachment(**kwargs):
 def get_broker_connect_attachment(**kwargs):
     """Create the slack message attachment for broker connection."""
     if kwargs["show_celery_hostname"]:
-        message = "*Celery (re)connected to broker on {}.*".format(
-            socket.gethostname()
+        message = "*{process} (re)connected to broker on {host}.*".format(
+            process=processes.get(current_process()._name, ""),
+            host=socket.gethostname()
         )
     else:
-        message = "*Celery (re)connected to broker.*"
+        message = "*{process} (re)connected to broker.*".format(
+            process=processes.get(current_process()._name, ""),
+        )
 
     attachment = {
         "attachments": [
