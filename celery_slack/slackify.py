@@ -5,8 +5,10 @@ from celery.signals import beat_init
 from celery.signals import celeryd_init
 from celery.signals import task_prerun
 from celery.signals import worker_shutdown
+import kombu
 
 from .callbacks import slack_beat_init
+from .callbacks import slack_broker_connection_failure
 from .callbacks import slack_celery_shutdown
 from .callbacks import slack_celery_startup
 from .callbacks import slack_task_failure
@@ -24,6 +26,7 @@ DEFAULT_OPTIONS = {
     "slack_task_prerun_color": "#D3D3D3",
     "slack_task_success_color": "#36A64F",
     "slack_task_failure_color": "#D00001",
+    "slack_broker_disconnect_color": "#D00001",
     "flower_base_url": None,
     "show_task_id": True,
     "show_task_execution_time": True,
@@ -36,6 +39,7 @@ DEFAULT_OPTIONS = {
     "show_startup": True,
     "show_shutdown": True,
     "show_beat": True,
+    "show_broker": True,
     "use_fixed_width": True,
     "include_tasks": None,
     "exclude_tasks": None,
@@ -81,6 +85,7 @@ class Slackify(object):
 
         self._connect_signals()
         self._decorate_task_methods()
+        self._decorate_kombu_retry()
 
     def _connect_signals(self):
         """Connect callbacks to celery signals.
@@ -119,3 +124,11 @@ class Slackify(object):
                 slack_task_success(**self.options)(self.app.Task.on_success)
         self.app.Task.on_failure = \
             slack_task_failure(**self.options)(self.app.Task.on_failure)
+
+    def _decorate_kombu_retry(self):
+        """Decorate the kombu.connection.retry_over_time function."""
+        if self.options["show_broker"]:
+            kombu.connection.retry_over_time = \
+                slack_broker_connection_failure(**self.options)(
+                    kombu.connection.retry_over_time
+                )

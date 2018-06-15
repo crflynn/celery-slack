@@ -1,7 +1,9 @@
 """Celery state and task callbacks."""
 from functools import wraps
+import time
 
 from .attachments import get_beat_init_attachment
+from .attachments import get_broker_disconnection_attachment
 from .attachments import get_celery_shutdown_attachment
 from .attachments import get_celery_startup_attachment
 from .attachments import get_task_failure_attachment
@@ -119,3 +121,48 @@ def slack_beat_init(**cbkwargs):
         post_to_slack(cbkwargs["webhook"], ' ', attachment)
 
     return slack_beat_init_callback
+
+
+# Prevent spam
+BROKER_FAILURE_COOLDOWN = 60
+BROKER_FAILURE_TIME = time.time() - BROKER_FAILURE_COOLDOWN
+
+
+def slack_broker_connection_failure(**cbkwargs):
+    """Wrap the kombu.connection.retry_over_time callback callable."""
+    def slack_callback():
+        global BROKER_FAILURE_TIME
+        global BROKER_FAILURE_COOLDOWN
+
+        if time.time() - BROKER_FAILURE_TIME > BROKER_FAILURE_COOLDOWN:
+            BROKER_FAILURE_TIME = time.time()
+            attachment = get_broker_disconnection_attachment(**cbkwargs)
+            post_to_slack(cbkwargs["webhook"], ' ', attachment)
+
+    def wrapper(func):
+
+        @wraps(func)
+        def wrapped_func(fun, catch, args=[], kwargs={}, errback=None,
+                    max_retries=None, interval_start=2, interval_step=2,
+                    interval_max=30, callback=None):
+
+            def callback_wrapper(cb_func):
+                @wraps(cb_func)
+                def wrapped_cb_func(*args, **kwargs):
+                    slack_callback()
+                    return cb_func(*args, **kwargs)
+                return wrapped_cb_func
+
+            if callback is not None:
+                callback = callback_wrapper(callback)
+            else:
+                callback = slack_callback
+
+            func(fun=fun, catch=catch, args=args, kwargs=kwargs,
+                    errback=errback, max_retries=max_retries,
+                    interval_start=interval_start, interval_step=interval_step,
+                    interval_max=interval_max, callback=callback)
+
+        return wrapped_func
+
+    return wrapper

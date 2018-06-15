@@ -25,11 +25,12 @@ options = {
     "flower_base_url": "https://flower.example.com",
     "webhook": slack_webhook,
     "beat_schedule": schedule,
-    "show_task_prerun": True,
+    # "show_task_prerun": True,
     # "failures_only": True,
-    # "show_startup": False,
-    # "show_shutdown": False,
-    # "show_beat": False,
+    # "show_celery_hostname": True,
+    "show_startup": False,
+    "show_shutdown": False,
+    "show_beat": False,
 }
 
 # logging.info('Creating celery-slack object.')

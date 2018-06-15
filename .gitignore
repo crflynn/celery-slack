@@ -3,6 +3,7 @@
 
 # celery
 celerybeat-schedule
+celerybeat_schedule.db
 
 # pytest
 .cache

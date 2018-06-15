@@ -302,6 +302,30 @@ def get_beat_init_attachment(**kwargs):
     return attachment
 
 
+def get_broker_disconnection_attachment(**kwargs):
+    """Create the slack message attachment for broker disconnection."""
+    if kwargs["show_celery_hostname"]:
+        message = "*Celery could not connect to broker on {}.*".format(
+            socket.gethostname()
+        )
+    else:
+        message = "*Celery could not connect to broker.*"
+
+    attachment = {
+        "attachments": [
+            {
+                "fallback": message,
+                "color": kwargs["slack_broker_disconnect_color"],
+                "text": message,
+                "mrkdwn_in": ["text"]
+            }
+        ],
+        "text": ''
+    }
+
+    return attachment
+
+
 def schedule_to_string(schedule):
     """Transform a crontab, solar, or timedelta to a string."""
     if isinstance(schedule, crontab):
