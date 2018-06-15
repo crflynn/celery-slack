@@ -143,7 +143,6 @@ def slack_broker_disconnect(**cbkwargs):
         BROKER_CONNECT_TIME = time.time() - BROKER_COOLDOWN
 
         if time.time() - BROKER_DISCONNECT_TIME > BROKER_COOLDOWN:
-            print("dis", BROKER_CONNECTED)
             BROKER_CONNECTED = False
             BROKER_DISCONNECT_TIME = time.time()
             attachment = get_broker_disconnect_attachment(**cbkwargs)
@@ -189,10 +188,8 @@ def slack_broker_connect(**cbkwargs):
 
         BROKER_DISCONNECT_TIME = time.time() - BROKER_COOLDOWN
         passed_cooldown = time.time() - BROKER_CONNECT_TIME > BROKER_COOLDOWN
-        print("con", BROKER_CONNECTED)
 
         if not BROKER_CONNECTED and passed_cooldown:
-            print("cons", BROKER_CONNECTED)
             BROKER_CONNECTED = True
             BROKER_CONNECT_TIME = time.time()
             attachment = get_broker_connect_attachment(**cbkwargs)
