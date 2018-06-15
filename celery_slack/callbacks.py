@@ -3,7 +3,8 @@ from functools import wraps
 import time
 
 from .attachments import get_beat_init_attachment
-from .attachments import get_broker_disconnection_attachment
+from .attachments import get_broker_connect_attachment
+from .attachments import get_broker_disconnect_attachment
 from .attachments import get_celery_shutdown_attachment
 from .attachments import get_celery_startup_attachment
 from .attachments import get_task_failure_attachment
@@ -124,19 +125,28 @@ def slack_beat_init(**cbkwargs):
 
 
 # Prevent spam
-BROKER_FAILURE_COOLDOWN = 60
-BROKER_FAILURE_TIME = time.time() - BROKER_FAILURE_COOLDOWN
+BROKER_COOLDOWN = 60
+BROKER_CONNECTED = False
+BROKER_DISCONNECT_TIME = time.time() - BROKER_COOLDOWN
+BROKER_CONNECT_TIME = time.time() - BROKER_COOLDOWN
 
 
-def slack_broker_connection_failure(**cbkwargs):
+def slack_broker_disconnect(**cbkwargs):
     """Wrap the kombu.connection.retry_over_time callback callable."""
-    def slack_callback():
-        global BROKER_FAILURE_TIME
-        global BROKER_FAILURE_COOLDOWN
+    def slack_broker_disconnect_callback():
+        """Post to slack and reset the cooldown on connect."""
+        global BROKER_DISCONNECT_TIME
+        global BROKER_CONNECT_TIME
+        global BROKER_COOLDOWN
+        global BROKER_CONNECTED
 
-        if time.time() - BROKER_FAILURE_TIME > BROKER_FAILURE_COOLDOWN:
-            BROKER_FAILURE_TIME = time.time()
-            attachment = get_broker_disconnection_attachment(**cbkwargs)
+        BROKER_CONNECT_TIME = time.time() - BROKER_COOLDOWN
+
+        if time.time() - BROKER_DISCONNECT_TIME > BROKER_COOLDOWN:
+            print("dis", BROKER_CONNECTED)
+            BROKER_CONNECTED = False
+            BROKER_DISCONNECT_TIME = time.time()
+            attachment = get_broker_disconnect_attachment(**cbkwargs)
             post_to_slack(cbkwargs["webhook"], ' ', attachment)
 
     def wrapper(func):
@@ -149,19 +159,62 @@ def slack_broker_connection_failure(**cbkwargs):
             def callback_wrapper(cb_func):
                 @wraps(cb_func)
                 def wrapped_cb_func(*args, **kwargs):
-                    slack_callback()
+                    slack_broker_disconnect_callback()
                     return cb_func(*args, **kwargs)
                 return wrapped_cb_func
 
             if callback is not None:
                 callback = callback_wrapper(callback)
             else:
-                callback = slack_callback
+                callback = slack_broker_disconnect_callback
 
             func(fun=fun, catch=catch, args=args, kwargs=kwargs,
                     errback=errback, max_retries=max_retries,
                     interval_start=interval_start, interval_step=interval_step,
                     interval_max=interval_max, callback=callback)
+
+        return wrapped_func
+
+    return wrapper
+
+
+def slack_broker_connect(**cbkwargs):
+    """Wrap the kombu.connection.retry_over_time function."""
+    def slack_broker_connect_callback():
+        """Post to slack and reset the cooldown on disconnect."""
+        global BROKER_DISCONNECT_TIME
+        global BROKER_CONNECT_TIME
+        global BROKER_COOLDOWN
+        global BROKER_CONNECTED
+
+        BROKER_DISCONNECT_TIME = time.time() - BROKER_COOLDOWN
+        passed_cooldown = time.time() - BROKER_CONNECT_TIME > BROKER_COOLDOWN
+        print("con", BROKER_CONNECTED)
+
+        if not BROKER_CONNECTED and passed_cooldown:
+            print("cons", BROKER_CONNECTED)
+            BROKER_CONNECTED = True
+            BROKER_CONNECT_TIME = time.time()
+            attachment = get_broker_connect_attachment(**cbkwargs)
+            post_to_slack(cbkwargs["webhook"], ' ', attachment)
+
+    def wrapper(func):
+
+        @wraps(func)
+        def wrapped_func(fun, catch, args=[], kwargs={}, errback=None,
+                    max_retries=None, interval_start=2, interval_step=2,
+                    interval_max=30, callback=None):
+
+            try:
+                func(fun=fun, catch=catch, args=args, kwargs=kwargs,
+                        errback=errback, max_retries=max_retries,
+                        interval_start=interval_start,
+                        interval_step=interval_step,
+                        interval_max=interval_max, callback=callback)
+            except Exception as exc:
+                raise
+
+            slack_broker_connect_callback()
 
         return wrapped_func
 

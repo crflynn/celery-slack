@@ -302,7 +302,7 @@ def get_beat_init_attachment(**kwargs):
     return attachment
 
 
-def get_broker_disconnection_attachment(**kwargs):
+def get_broker_disconnect_attachment(**kwargs):
     """Create the slack message attachment for broker disconnection."""
     if kwargs["show_celery_hostname"]:
         message = "*Celery could not connect to broker on {}.*".format(
@@ -316,6 +316,30 @@ def get_broker_disconnection_attachment(**kwargs):
             {
                 "fallback": message,
                 "color": kwargs["slack_broker_disconnect_color"],
+                "text": message,
+                "mrkdwn_in": ["text"]
+            }
+        ],
+        "text": ''
+    }
+
+    return attachment
+
+
+def get_broker_connect_attachment(**kwargs):
+    """Create the slack message attachment for broker connection."""
+    if kwargs["show_celery_hostname"]:
+        message = "*Celery (re)connected to broker on {}.*".format(
+            socket.gethostname()
+        )
+    else:
+        message = "*Celery (re)connected to broker.*"
+
+    attachment = {
+        "attachments": [
+            {
+                "fallback": message,
+                "color": kwargs["slack_broker_connect_color"],
                 "text": message,
                 "mrkdwn_in": ["text"]
             }

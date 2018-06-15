@@ -8,7 +8,8 @@ from celery.signals import worker_shutdown
 import kombu
 
 from .callbacks import slack_beat_init
-from .callbacks import slack_broker_connection_failure
+from .callbacks import slack_broker_connect
+from .callbacks import slack_broker_disconnect
 from .callbacks import slack_celery_shutdown
 from .callbacks import slack_celery_startup
 from .callbacks import slack_task_failure
@@ -21,16 +22,17 @@ from .exceptions import TaskFiltrationException
 
 DEFAULT_OPTIONS = {
     "slack_beat_init_color": "#FFCC2B",
+    "slack_broker_connect_color": "#36A64F",
+    "slack_broker_disconnect_color": "#D00001",
     "slack_celery_startup_color": "#FFCC2B",
     "slack_celery_shutdown_color": "#660033",
     "slack_task_prerun_color": "#D3D3D3",
     "slack_task_success_color": "#36A64F",
     "slack_task_failure_color": "#D00001",
-    "slack_broker_disconnect_color": "#D00001",
     "flower_base_url": None,
+    "show_celery_hostname": False,
     "show_task_id": True,
     "show_task_execution_time": True,
-    "show_celery_hostname": False,
     "show_task_args": True,
     "show_task_kwargs": True,
     "show_task_exception_info": True,
@@ -129,6 +131,10 @@ class Slackify(object):
         """Decorate the kombu.connection.retry_over_time function."""
         if self.options["show_broker"]:
             kombu.connection.retry_over_time = \
-                slack_broker_connection_failure(**self.options)(
+                slack_broker_disconnect(**self.options)(
+                    kombu.connection.retry_over_time
+                )
+            kombu.connection.retry_over_time = \
+                slack_broker_connect(**self.options)(
                     kombu.connection.retry_over_time
                 )
