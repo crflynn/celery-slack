@@ -1,7 +1,10 @@
 """Celery state and task callbacks."""
 from functools import wraps
+import time
 
 from .attachments import get_beat_init_attachment
+from .attachments import get_broker_connect_attachment
+from .attachments import get_broker_disconnect_attachment
 from .attachments import get_celery_shutdown_attachment
 from .attachments import get_celery_startup_attachment
 from .attachments import get_task_failure_attachment
@@ -26,7 +29,7 @@ def slack_task_prerun(**cbkwargs):
             attachment = get_task_prerun_attachment(
                 task_id, task, args, kwargs, **cbkwargs)
 
-            post_to_slack(cbkwargs["webhook"], ' ', attachment)
+            post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     return slack_task_prerun_callback
 
@@ -46,7 +49,7 @@ def slack_task_success(**cbkwargs):
                 self.name, retval, task_id, args, kwargs, **cbkwargs)
 
             if attachment:
-                post_to_slack(cbkwargs["webhook"], ' ', attachment)
+                post_to_slack(cbkwargs["webhook"], " ", attachment)
 
             return func(self, retval, task_id, args, kwargs)
 
@@ -70,7 +73,7 @@ def slack_task_failure(**cbkwargs):
                 self.name, exc, task_id, args, kwargs, einfo, **cbkwargs)
 
             if attachment:
-                post_to_slack(cbkwargs["webhook"], ' ', attachment)
+                post_to_slack(cbkwargs["webhook"], " ", attachment)
 
             return func(self, exc, task_id, args, kwargs, einfo)
 
@@ -88,7 +91,7 @@ def slack_celery_startup(**cbkwargs):
         """
         attachment = get_celery_startup_attachment(**cbkwargs)
 
-        post_to_slack(cbkwargs["webhook"], ' ', attachment)
+        post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     return slack_celery_startup_callback
 
@@ -102,7 +105,7 @@ def slack_celery_shutdown(**cbkwargs):
         """
         attachment = get_celery_shutdown_attachment(**cbkwargs)
 
-        post_to_slack(cbkwargs["webhook"], ' ', attachment)
+        post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     return slack_celery_shutdown_callback
 
@@ -116,6 +119,101 @@ def slack_beat_init(**cbkwargs):
         """
         attachment = get_beat_init_attachment(**cbkwargs)
 
-        post_to_slack(cbkwargs["webhook"], ' ', attachment)
+        post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     return slack_beat_init_callback
+
+
+# Prevent spam
+BROKER_COOLDOWN = 60
+# Assume connected at start
+BROKER_CONNECTED = True
+BROKER_DISCONNECT_TIME = time.time() - BROKER_COOLDOWN
+BROKER_CONNECT_TIME = time.time() - BROKER_COOLDOWN
+
+
+def slack_broker_disconnect(**cbkwargs):
+    """Wrap the kombu.connection.retry_over_time callback callable."""
+    def slack_broker_disconnect_callback():
+        """Post to slack and reset the cooldown on connect."""
+        global BROKER_DISCONNECT_TIME
+        global BROKER_CONNECT_TIME
+        global BROKER_COOLDOWN
+        global BROKER_CONNECTED
+
+        BROKER_CONNECT_TIME = time.time() - BROKER_COOLDOWN
+
+        if time.time() - BROKER_DISCONNECT_TIME > BROKER_COOLDOWN:
+            BROKER_CONNECTED = False
+            BROKER_DISCONNECT_TIME = time.time()
+            attachment = get_broker_disconnect_attachment(**cbkwargs)
+            post_to_slack(cbkwargs["webhook"], " ", attachment)
+
+    def wrapper(func):
+
+        @wraps(func)
+        def wrapped_func(fun, catch, args=[], kwargs={}, errback=None,
+                    max_retries=None, interval_start=2, interval_step=2,
+                    interval_max=30, callback=None):
+
+            def callback_wrapper(cb_func):
+                @wraps(cb_func)
+                def wrapped_cb_func(*args, **kwargs):
+                    slack_broker_disconnect_callback()
+                    return cb_func(*args, **kwargs)
+                return wrapped_cb_func
+
+            if callback is not None:
+                callback = callback_wrapper(callback)
+            else:
+                callback = slack_broker_disconnect_callback
+
+            func(fun=fun, catch=catch, args=args, kwargs=kwargs,
+                errback=errback, max_retries=max_retries,
+                interval_start=interval_start, interval_step=interval_step,
+                interval_max=interval_max, callback=callback)
+
+        return wrapped_func
+
+    return wrapper
+
+
+def slack_broker_connect(**cbkwargs):
+    """Wrap the kombu.connection.retry_over_time function."""
+    def slack_broker_connect_callback():
+        """Post to slack and reset the cooldown on disconnect."""
+        global BROKER_DISCONNECT_TIME
+        global BROKER_CONNECT_TIME
+        global BROKER_COOLDOWN
+        global BROKER_CONNECTED
+
+        BROKER_DISCONNECT_TIME = time.time() - BROKER_COOLDOWN
+        passed_cooldown = time.time() - BROKER_CONNECT_TIME > BROKER_COOLDOWN
+
+        if not BROKER_CONNECTED and passed_cooldown:
+            BROKER_CONNECTED = True
+            BROKER_CONNECT_TIME = time.time()
+            attachment = get_broker_connect_attachment(**cbkwargs)
+            post_to_slack(cbkwargs["webhook"], " ", attachment)
+
+    def wrapper(func):
+
+        @wraps(func)
+        def wrapped_func(fun, catch, args=[], kwargs={}, errback=None,
+                    max_retries=None, interval_start=2, interval_step=2,
+                    interval_max=30, callback=None):
+
+            try:
+                func(fun=fun, catch=catch, args=args, kwargs=kwargs,
+                        errback=errback, max_retries=max_retries,
+                        interval_start=interval_start,
+                        interval_step=interval_step,
+                        interval_max=interval_max, callback=callback)
+            except Exception as exc:  # pragma: no cover
+                raise exc
+
+            slack_broker_connect_callback()
+
+        return wrapped_func
+
+    return wrapper

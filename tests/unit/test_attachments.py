@@ -3,13 +3,17 @@ import socket
 
 from celery_slack.attachments import add_task_to_stopwatch
 from celery_slack.attachments import get_beat_init_attachment
+from celery_slack.attachments import get_broker_connect_attachment
+from celery_slack.attachments import get_broker_disconnect_attachment
 from celery_slack.attachments import get_celery_shutdown_attachment
 from celery_slack.attachments import get_celery_startup_attachment
 from celery_slack.attachments import get_task_failure_attachment
 from celery_slack.attachments import get_task_prerun_attachment
 from celery_slack.attachments import get_task_success_attachment
+from celery_slack.attachments import processes
 from celery_slack.attachments import schedule_to_string
 from .conftest import get_options
+from .conftest import MockProcess
 
 
 def test_schedule_to_string(schedule):
@@ -295,3 +299,69 @@ def test_task_success_attachment(
             assert "`" not in message
     else:
         assert "Return" not in message
+
+
+def test_broker_disconnect_attachment(
+        default_options,
+        show_celery_hostname,
+        process_name,
+        mocker,
+    ):
+    """Test the broker disconnect attachment."""
+    these_options = locals()
+    these_options.pop("default_options")
+    options = get_options(default_options, **these_options)
+
+    mocked_process = MockProcess(process_name)
+    mocked_current_process_name = mocker.patch(
+        "celery_slack.attachments.current_process")
+    mocked_current_process_name.return_value = mocked_process
+
+    attachment = get_broker_disconnect_attachment(**options)
+
+    message = attachment["attachments"][0]["text"]
+
+    if show_celery_hostname:
+        assert socket.gethostname() in message
+    else:
+        assert socket.gethostname() not in message
+
+    if process_name in processes:
+        assert processes[process_name] in message
+    else:
+        assert process_name in message
+
+    assert "could not connect" in message
+
+
+def test_broker_connect_attachment(
+        default_options,
+        show_celery_hostname,
+        process_name,
+        mocker,
+    ):
+    """Test the broker connect attachment."""
+    these_options = locals()
+    these_options.pop("default_options")
+    options = get_options(default_options, **these_options)
+
+    mocked_process = MockProcess(process_name)
+    mocked_current_process_name = mocker.patch(
+        "celery_slack.attachments.current_process")
+    mocked_current_process_name.return_value = mocked_process
+
+    attachment = get_broker_connect_attachment(**options)
+
+    message = attachment["attachments"][0]["text"]
+
+    if show_celery_hostname:
+        assert socket.gethostname() in message
+    else:
+        assert socket.gethostname() not in message
+
+    if process_name in processes:
+        assert processes[process_name] in message
+    else:
+        assert process_name in message
+
+    assert "connected" in message
