@@ -41,7 +41,7 @@ DEFAULT_OPTIONS = {
     "show_startup": True,
     "show_shutdown": True,
     "show_beat": True,
-    "show_broker": True,
+    "show_broker": False,
     "use_fixed_width": True,
     "include_tasks": None,
     "exclude_tasks": None,
