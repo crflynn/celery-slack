@@ -31,6 +31,7 @@ options = {
     # "show_celery_hostname": True,
     # "show_startup": False,
     # "show_shutdown": False,
+    "slack_request_timeout": 3,
     "show_broker": True,
 }
 

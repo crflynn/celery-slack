@@ -61,23 +61,27 @@ extension:
 ```python
 DEFAULT_OPTIONS = {
     "slack_beat_init_color": "#FFCC2B",
+    "slack_broker_connect_color": "#36A64F",
+    "slack_broker_disconnect_color": "#D00001",
     "slack_celery_startup_color": "#FFCC2B",
     "slack_celery_shutdown_color": "#660033",
     "slack_task_prerun_color": "#D3D3D3",
     "slack_task_success_color": "#36A64F",
     "slack_task_failure_color": "#D00001",
+    "slack_request_timeout": 1,
     "flower_base_url": None,
+    "show_celery_hostname": False,
     "show_task_id": True,
     "show_task_execution_time": True,
-    "show_celery_hostname": False,
     "show_task_args": True,
     "show_task_kwargs": True,
     "show_task_exception_info": True,
     "show_task_return_value": True,
-    "show_task_prerun": True,
+    "show_task_prerun": False,
     "show_startup": True,
     "show_shutdown": True,
     "show_beat": True,
+    "show_broker": False,
     "use_fixed_width": True,
     "include_tasks": None,
     "exclude_tasks": None,
@@ -103,6 +107,7 @@ Most of the options are self explanatory, but here are some additional details:
 
 * **slack_\*_color**: The left vertical bar color associated with the slack
     message attachments
+* **slack_request_timeout**: The Slack message request timeout in seconds
 * **flower_base_url**: e.g. https://flower.example.com, if provided, the slack
     message titles will link to task pages in
     [Flower](http://flower.readthedocs.io/en/latest/)
