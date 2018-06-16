@@ -7,9 +7,9 @@ name = "pypi"
 
 [packages]
 
-celery = "*"
 requests = "*"
 ephem = "*"
+celery = "*"
 
 
 [dev-packages]
