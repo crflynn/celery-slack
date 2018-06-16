@@ -18,6 +18,7 @@ from .callbacks import slack_task_success
 from .exceptions import InvalidColorException
 from .exceptions import MissingWebhookException
 from .exceptions import TaskFiltrationException
+from celery_slack import slack
 
 
 DEFAULT_OPTIONS = {
@@ -29,6 +30,7 @@ DEFAULT_OPTIONS = {
     "slack_task_prerun_color": "#D3D3D3",
     "slack_task_success_color": "#36A64F",
     "slack_task_failure_color": "#D00001",
+    "slack_request_timeout": 1,
     "flower_base_url": None,
     "show_celery_hostname": False,
     "show_task_id": True,
@@ -88,6 +90,8 @@ class Slackify(object):
         self._connect_signals()
         self._decorate_task_methods()
         self._decorate_kombu_retry()
+
+        slack.TIMEOUT = self.options["slack_request_timeout"]
 
     def _connect_signals(self):
         """Connect callbacks to celery signals.
