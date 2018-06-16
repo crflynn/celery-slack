@@ -29,7 +29,7 @@ def slack_task_prerun(**cbkwargs):
             attachment = get_task_prerun_attachment(
                 task_id, task, args, kwargs, **cbkwargs)
 
-            post_to_slack(cbkwargs["webhook"], ' ', attachment)
+            post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     return slack_task_prerun_callback
 
@@ -49,7 +49,7 @@ def slack_task_success(**cbkwargs):
                 self.name, retval, task_id, args, kwargs, **cbkwargs)
 
             if attachment:
-                post_to_slack(cbkwargs["webhook"], ' ', attachment)
+                post_to_slack(cbkwargs["webhook"], " ", attachment)
 
             return func(self, retval, task_id, args, kwargs)
 
@@ -73,7 +73,7 @@ def slack_task_failure(**cbkwargs):
                 self.name, exc, task_id, args, kwargs, einfo, **cbkwargs)
 
             if attachment:
-                post_to_slack(cbkwargs["webhook"], ' ', attachment)
+                post_to_slack(cbkwargs["webhook"], " ", attachment)
 
             return func(self, exc, task_id, args, kwargs, einfo)
 
@@ -91,7 +91,7 @@ def slack_celery_startup(**cbkwargs):
         """
         attachment = get_celery_startup_attachment(**cbkwargs)
 
-        post_to_slack(cbkwargs["webhook"], ' ', attachment)
+        post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     return slack_celery_startup_callback
 
@@ -105,7 +105,7 @@ def slack_celery_shutdown(**cbkwargs):
         """
         attachment = get_celery_shutdown_attachment(**cbkwargs)
 
-        post_to_slack(cbkwargs["webhook"], ' ', attachment)
+        post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     return slack_celery_shutdown_callback
 
@@ -119,14 +119,15 @@ def slack_beat_init(**cbkwargs):
         """
         attachment = get_beat_init_attachment(**cbkwargs)
 
-        post_to_slack(cbkwargs["webhook"], ' ', attachment)
+        post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     return slack_beat_init_callback
 
 
 # Prevent spam
 BROKER_COOLDOWN = 60
-BROKER_CONNECTED = False
+# Assume connected at start
+BROKER_CONNECTED = True
 BROKER_DISCONNECT_TIME = time.time() - BROKER_COOLDOWN
 BROKER_CONNECT_TIME = time.time() - BROKER_COOLDOWN
 
@@ -146,7 +147,7 @@ def slack_broker_disconnect(**cbkwargs):
             BROKER_CONNECTED = False
             BROKER_DISCONNECT_TIME = time.time()
             attachment = get_broker_disconnect_attachment(**cbkwargs)
-            post_to_slack(cbkwargs["webhook"], ' ', attachment)
+            post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     def wrapper(func):
 
@@ -168,9 +169,9 @@ def slack_broker_disconnect(**cbkwargs):
                 callback = slack_broker_disconnect_callback
 
             func(fun=fun, catch=catch, args=args, kwargs=kwargs,
-                    errback=errback, max_retries=max_retries,
-                    interval_start=interval_start, interval_step=interval_step,
-                    interval_max=interval_max, callback=callback)
+                errback=errback, max_retries=max_retries,
+                interval_start=interval_start, interval_step=interval_step,
+                interval_max=interval_max, callback=callback)
 
         return wrapped_func
 
@@ -193,7 +194,7 @@ def slack_broker_connect(**cbkwargs):
             BROKER_CONNECTED = True
             BROKER_CONNECT_TIME = time.time()
             attachment = get_broker_connect_attachment(**cbkwargs)
-            post_to_slack(cbkwargs["webhook"], ' ', attachment)
+            post_to_slack(cbkwargs["webhook"], " ", attachment)
 
     def wrapper(func):
 
@@ -208,8 +209,8 @@ def slack_broker_connect(**cbkwargs):
                         interval_start=interval_start,
                         interval_step=interval_step,
                         interval_max=interval_max, callback=callback)
-            except Exception as exc:
-                raise
+            except Exception as exc:  # pragma: no cover
+                raise exc
 
             slack_broker_connect_callback()
 

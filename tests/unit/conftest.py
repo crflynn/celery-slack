@@ -8,7 +8,7 @@ import uuid
 
 from celery import __version__ as CELERY_VERSION
 from celery.schedules import crontab
-if CELERY_VERSION >= '4.0.0':
+if CELERY_VERSION >= "4.0.0":
     from celery.schedules import solar
 import pytest
 
@@ -19,23 +19,23 @@ from tests.celeryapp.schedule import get_schedule
 try:
     from ..secret import slack_webhook
 except Exception:
-    slack_webhook = os.environ['SLACK_WEBHOOK']
+    slack_webhook = os.environ["SLACK_WEBHOOK"]
 
 
 PYTHON_VERSION = platform.python_version()
-PYTHON_VERSION_THRESHOLD = '3.4'
+PYTHON_VERSION_THRESHOLD = "3.4"
 
 # Use vcrpy for python3.4 or higher, else use repsonses
 if PYTHON_VERSION >= PYTHON_VERSION_THRESHOLD:
     import vcr
-    CASSETTE_LIBRARY = 'tests/cassettes'
+    CASSETTE_LIBRARY = "tests/cassettes"
 
     if not os.path.exists(CASSETTE_LIBRARY):
         os.makedirs(CASSETTE_LIBRARY)
 
     def scrub_login_request(request):
         """Remove webhooks from cassettes."""
-        request.uri = 'https://hooks.slack.com/services/SLACK_WEBHOOK'
+        request.uri = "https://hooks.slack.com/services/SLACK_WEBHOOK"
         return request
 
     my_vcr = vcr.VCR(before_record_request=scrub_login_request)
@@ -77,7 +77,7 @@ def possible_webhook(request):
                 "mrkdwn_in": ["text"]
             }
         ],
-        "text": ''
+        "text": ""
     },
     None
 ])
@@ -88,7 +88,7 @@ def slack_attachment(request):
 
 @pytest.fixture(params=[
     crontab(hour=12, minute=12),
-    solar('sunset', 50, 50) if CELERY_VERSION > '4.0.0' else 9000,
+    solar("sunset", 50, 50) if CELERY_VERSION > "4.0.0" else 9000,
     timedelta(5),
     3000
 ])
@@ -175,10 +175,10 @@ class Task(object):
 @pytest.fixture
 def task():
     """Return a fake task object."""
-    return Task('task.name')
+    return Task("task.name")
 
 
-@pytest.fixture(params=[None, 'https://flower.example.com'])
+@pytest.fixture(params=[None, "https://flower.example.com"])
 def flower_base_url(request):
     return request.param
 
@@ -273,8 +273,36 @@ def beat_show_full_task_path(request):
     return request.param
 
 
+@pytest.fixture(params=[True, False])
+def show_broker(request):
+    return request.param
+
+
+@pytest.fixture(params=[True, False])
+def broker_connected(request):
+    return request.param
+
+
 def get_options(default, **kwargs):
     """Get full options dict."""
     options = copy.deepcopy(default)
     options.update(**kwargs)
     return dict(options)
+
+
+class MockProcess(object):
+    def __init__(self, name):
+        self._name = name
+
+
+@pytest.fixture(params=["MainProcess", "Beat", ""])
+def process_name(request):
+    return request.param
+
+
+def mock_callback():
+    pass
+
+@pytest.fixture(params=[None, mock_callback])
+def callback(request):
+    return request.param

@@ -9,12 +9,12 @@ from billiard.process import current_process
 from celery import __version__ as CELERY_VERSION
 from celery.schedules import crontab
 
-if CELERY_VERSION >= '4.0.0':
+if CELERY_VERSION >= "4.0.0":
     from celery.schedules import solar
 
 
 STOPWATCH = {}
-BEAT_DELIMITER = ' -> '
+BEAT_DELIMITER = " -> "
 
 
 def add_task_to_stopwatch(task_id):
@@ -24,25 +24,25 @@ def add_task_to_stopwatch(task_id):
 
 def get_task_prerun_attachment(task_id, task, args, kwargs, **cbkwargs):
     """Create the slack message attachment for a task prerun."""
-    message = 'Executing -- ' + task.name.rsplit('.', 1)[-1]
+    message = "Executing -- " + task.name.rsplit(".", 1)[-1]
 
-    lines = ['Name: *' + task.name + '*']
+    lines = ["Name: *" + task.name + "*"]
 
     if cbkwargs["show_task_id"]:
-        lines.append('Task ID: ' + task_id)
+        lines.append("Task ID: " + task_id)
 
     if cbkwargs["use_fixed_width"]:
         if cbkwargs["show_task_args"]:
-            lines.append('args: ' + '`' + str(args) + '`')
+            lines.append("args: " + "`" + str(args) + "`")
         if cbkwargs["show_task_kwargs"]:
-            lines.append('kwargs: ' + '`' + str(kwargs) + '`')
+            lines.append("kwargs: " + "`" + str(kwargs) + "`")
     else:
         if cbkwargs["show_task_args"]:
-            lines.append('args: ' + str(args))
+            lines.append("args: " + str(args))
         if cbkwargs["show_task_kwargs"]:
-            lines.append('kwargs: ' + str(kwargs))
+            lines.append("kwargs: " + str(kwargs))
 
-    executing = '\n'.join(lines)
+    executing = "\n".join(lines)
 
     attachment = {
         "attachments": [
@@ -54,13 +54,13 @@ def get_task_prerun_attachment(task_id, task, args, kwargs, **cbkwargs):
                 "mrkdwn_in": ["text"]
             }
         ],
-        "text": ''
+        "text": ""
     }
 
     if cbkwargs["flower_base_url"]:
         attachment["attachments"][0]["title_link"] = (
             cbkwargs["flower_base_url"] +
-            '/task/{tid}'.format(tid=task_id)
+            "/task/{tid}".format(tid=task_id)
         )
 
     return attachment
@@ -85,36 +85,36 @@ def get_task_success_attachment(task_name, retval, task_id,
     else:
         retval = str(retval)
 
-    message = 'SUCCESS -- ' + task_name.rsplit('.', 1)[-1]
+    message = "SUCCESS -- " + task_name.rsplit(".", 1)[-1]
 
     elapsed = divmod(time.time() - STOPWATCH.pop(task_id), 60)
 
-    lines = ['Name: *' + task_name + '*']
+    lines = ["Name: *" + task_name + "*"]
 
     if cbkwargs["show_task_execution_time"]:
-        lines.append('Execution time: {m} minutes {s} seconds'.format(
+        lines.append("Execution time: {m} minutes {s} seconds".format(
             m=str(int(elapsed[0])),
             s=str(int(elapsed[1])),
         ))
     if cbkwargs["show_task_id"]:
-        lines.append('Task ID: ' + task_id)
+        lines.append("Task ID: " + task_id)
 
     if cbkwargs["use_fixed_width"]:
         if cbkwargs["show_task_args"]:
-            lines.append('args: ' + '`' + str(args) + '`')
+            lines.append("args: " + "`" + str(args) + "`")
         if cbkwargs["show_task_kwargs"]:
-            lines.append('kwargs: ' + '`' + str(kwargs) + '`')
+            lines.append("kwargs: " + "`" + str(kwargs) + "`")
         if cbkwargs["show_task_return_value"]:
-            lines.append('Returned: ' + '```' + str(retval) + '```')
+            lines.append("Returned: " + "```" + str(retval) + "```")
     else:
         if cbkwargs["show_task_args"]:
-            lines.append('args: ' + str(args))
+            lines.append("args: " + str(args))
         if cbkwargs["show_task_kwargs"]:
-            lines.append('kwargs: ' + str(kwargs))
+            lines.append("kwargs: " + str(kwargs))
         if cbkwargs["show_task_return_value"]:
-            lines.append('Returned: ' + str(retval))
+            lines.append("Returned: " + str(retval))
 
-    success = '\n'.join(lines)
+    success = "\n".join(lines)
 
     attachment = {
         "attachments": [
@@ -126,13 +126,13 @@ def get_task_success_attachment(task_name, retval, task_id,
                 "mrkdwn_in": ["text"]
             }
         ],
-        "text": ''
+        "text": ""
     }
 
     if cbkwargs["flower_base_url"]:
         attachment["attachments"][0]["title_link"] = (
             cbkwargs["flower_base_url"] +
-            '/task/{tid}'.format(tid=task_id)
+            "/task/{tid}".format(tid=task_id)
         )
 
     return attachment
@@ -152,38 +152,38 @@ def get_task_failure_attachment(task_name, exc, task_id, args,
         STOPWATCH.pop(task_id)
         return
 
-    message = 'FAILURE -- ' + task_name.rsplit('.', 1)[-1]
+    message = "FAILURE -- " + task_name.rsplit(".", 1)[-1]
 
     elapsed = divmod(time.time() - STOPWATCH.pop(task_id), 60)
 
-    lines = ['Name: *' + task_name + '*']
+    lines = ["Name: *" + task_name + "*"]
 
     if cbkwargs["show_task_execution_time"]:
-        lines.append('Execution time: {m} minutes {s} seconds'.format(
+        lines.append("Execution time: {m} minutes {s} seconds".format(
             m=str(int(elapsed[0])),
             s=str(int(elapsed[1])),
         ))
     if cbkwargs["show_task_id"]:
-        lines.append('Task ID: ' + task_id)
+        lines.append("Task ID: " + task_id)
 
     if cbkwargs["use_fixed_width"]:
         if cbkwargs["show_task_args"]:
-            lines.append('args: ' + '`' + str(args) + '`')
+            lines.append("args: " + "`" + str(args) + "`")
         if cbkwargs["show_task_kwargs"]:
-            lines.append('kwargs: ' + '`' + str(kwargs) + '`')
-        lines.append('Exception: ' + '`' + str(exc) + '`')
+            lines.append("kwargs: " + "`" + str(kwargs) + "`")
+        lines.append("Exception: " + "`" + str(exc) + "`")
         if cbkwargs["show_task_exception_info"]:
-            lines.append('Info: ' + '```' + str(einfo) + '```')
+            lines.append("Info: " + "```" + str(einfo) + "```")
     else:
         if cbkwargs["show_task_args"]:
-            lines.append('args: ' + str(args))
+            lines.append("args: " + str(args))
         if cbkwargs["show_task_kwargs"]:
-            lines.append('kwargs: ' + str(kwargs))
-        lines.append('Exception: ' + str(exc))
+            lines.append("kwargs: " + str(kwargs))
+        lines.append("Exception: " + str(exc))
         if cbkwargs["show_task_exception_info"]:
-            lines.append('Info: ' + str(einfo))
+            lines.append("Info: " + str(einfo))
 
-    failure = '\n'.join(lines)
+    failure = "\n".join(lines)
 
     attachment = {
         "attachments": [
@@ -195,13 +195,13 @@ def get_task_failure_attachment(task_name, exc, task_id, args,
                 "mrkdwn_in": ["text"]
             }
         ],
-        "text": ''
+        "text": ""
     }
 
     if cbkwargs["flower_base_url"]:
         attachment["attachments"][0]["title_link"] = (
             cbkwargs["flower_base_url"] +
-            '/task/{tid}'.format(tid=task_id)
+            "/task/{tid}".format(tid=task_id)
         )
 
     return attachment
@@ -225,7 +225,7 @@ def get_celery_startup_attachment(**kwargs):
                 "mrkdwn_in": ["text"]
             }
         ],
-        "text": ''
+        "text": ""
     }
 
     return attachment
@@ -249,7 +249,7 @@ def get_celery_shutdown_attachment(**kwargs):
                 "mrkdwn_in": ["text"]
             }
         ],
-        "text": ''
+        "text": ""
     }
 
     return attachment
@@ -266,27 +266,27 @@ def get_beat_init_attachment(**kwargs):
 
     beat_schedule = kwargs["beat_schedule"]
     if beat_schedule:
-        message += ' *with schedule:*'
+        message += " *with schedule:*"
 
         sched = []
         for task in sorted(beat_schedule):
             if kwargs["beat_show_full_task_path"]:
                 sched.append(
                     task + BEAT_DELIMITER +
-                    schedule_to_string(beat_schedule[task]['schedule']))
+                    schedule_to_string(beat_schedule[task]["schedule"]))
             else:
                 sched.append(
-                    task.split('.', 2)[-1] + BEAT_DELIMITER +
-                    schedule_to_string(beat_schedule[task]['schedule']))
+                    task.split(".", 2)[-1] + BEAT_DELIMITER +
+                    schedule_to_string(beat_schedule[task]["schedule"]))
         schedule = (
-            '\n*Task{}crontab(m/h/d/dM/MY) OR solar OR interval:*\n'.format(
+            "\n*Task{}crontab(m/h/d/dM/MY) OR solar OR interval:*\n".format(
                 BEAT_DELIMITER
             ) +
-            '```' + '\n'.join(sched) + '```'
+            "```" + "\n".join(sched) + "```"
         )
     else:
-        message = message[:-1] + '.' + message[-1:]
-        schedule = ''
+        message = message[:-1] + "." + message[-1:]
+        schedule = ""
 
     attachment = {
         "attachments": [
@@ -297,7 +297,7 @@ def get_beat_init_attachment(**kwargs):
                 "mrkdwn_in": ["text"]
             }
         ],
-        "text": ''
+        "text": ""
     }
 
     return attachment
@@ -313,12 +313,14 @@ def get_broker_disconnect_attachment(**kwargs):
     """Create the slack message attachment for broker disconnection."""
     if kwargs["show_celery_hostname"]:
         message = "*{process} could not connect to broker on {host}.*".format(
-            process=processes.get(current_process()._name, ""),
+            process=processes.get(
+                current_process()._name, current_process()._name),
             host=socket.gethostname()
         )
     else:
         message = "*{process} could not connect to broker.*".format(
-            process=processes.get(current_process()._name, ""),
+            process=processes.get(
+                current_process()._name, current_process()._name),
         )
 
     attachment = {
@@ -330,7 +332,7 @@ def get_broker_disconnect_attachment(**kwargs):
                 "mrkdwn_in": ["text"]
             }
         ],
-        "text": ''
+        "text": ""
     }
 
     return attachment
@@ -340,12 +342,14 @@ def get_broker_connect_attachment(**kwargs):
     """Create the slack message attachment for broker connection."""
     if kwargs["show_celery_hostname"]:
         message = "*{process} (re)connected to broker on {host}.*".format(
-            process=processes.get(current_process()._name, ""),
+            process=processes.get(
+                current_process()._name, current_process()._name),
             host=socket.gethostname()
         )
     else:
         message = "*{process} (re)connected to broker.*".format(
-            process=processes.get(current_process()._name, ""),
+            process=processes.get(
+                current_process()._name, current_process()._name),
         )
 
     attachment = {
@@ -357,7 +361,7 @@ def get_broker_connect_attachment(**kwargs):
                 "mrkdwn_in": ["text"]
             }
         ],
-        "text": ''
+        "text": ""
     }
 
     return attachment
@@ -367,9 +371,9 @@ def schedule_to_string(schedule):
     """Transform a crontab, solar, or timedelta to a string."""
     if isinstance(schedule, crontab):
         return str(schedule)[10:-15]
-    elif CELERY_VERSION >= '4.0.0' and isinstance(schedule, solar):
+    elif CELERY_VERSION >= "4.0.0" and isinstance(schedule, solar):
         return str(schedule)[8:-1]
     elif isinstance(schedule, timedelta):
-        return 'every ' + str(schedule)
+        return "every " + str(schedule)
     else:
-        return 'every ' + str(schedule) + ' seconds'
+        return "every " + str(schedule) + " seconds"

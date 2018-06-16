@@ -51,7 +51,7 @@ DEFAULT_OPTIONS = {
     "beat_show_full_task_path": False,
 }
 
-COLOR_REGEX = r'^#[a-fA-F0-9]{6}$'
+COLOR_REGEX = r"^#[a-fA-F0-9]{6}$"
 
 
 class Slackify(object):
@@ -79,7 +79,7 @@ class Slackify(object):
                 "Only one of 'include_tasks' and 'exclude_tasks' "
                 "options can be provided.")
 
-        colors = [self.options[c] for c in self.options.keys() if 'color' in c]
+        colors = [self.options[c] for c in self.options.keys() if "color" in c]
         for color in colors:
             if not re.search(COLOR_REGEX, color):
                 raise InvalidColorException(
