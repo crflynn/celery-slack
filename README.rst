@@ -146,6 +146,8 @@ Most of the options are self explanatory, but here are some additional details:
 * **show_startup**: Post message when celery starts
 * **show_shutdown**: Post message when celery stops
 * **show_beat**: Post message when beat starts
+* **show_broker**: Post messages when celery/beat disconnect from or reconnect
+    to the broker
 * **use_fixed_width**: Use slack fixed width formatting for args, kwargs,
     retval, and exception info
 * **include_tasks**: A list of task paths to include. If used, post task

@@ -1,6 +1,12 @@
 Release History
 ---------------
 
+0.3.0 (2018-06-16)
+~~~~~~~~~~~~~~~~~~
+
+* Add messages for celery/beat disconnection/reconnection to broker
+* Add option to override the Slack request timeout value
+
 0.2.0 (2018-06-10)
 ~~~~~~~~~~~~~~~~~~
 

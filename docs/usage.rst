@@ -85,6 +85,7 @@ Most of the options are self explanatory, but here are some additional details:
 
 * **slack_\*_color**: The left vertical bar color associated with the slack
   message attachments
+* **slack_request_timeout**: The Slack message request timeout in seconds
 * **flower_base_url**: e.g. https://flower.example.com, if provided, the slack
   message titles will link to task pages
   in `Flower <http://flower.readthedocs.io/en/latest/>`_
@@ -99,6 +100,8 @@ Most of the options are self explanatory, but here are some additional details:
 * **show_startup**: Post message when celery starts
 * **show_shutdown**: Post message when celery stops
 * **show_beat**: Post message when beat starts
+* **show_broker**: Post messages when celery/beat disconnect from or reconnect
+    to the broker
 * **use_fixed_width**: Use slack fixed width formatting for args, kwargs,
   retval, and exception info
 * **include_tasks**: A list of task paths to include. If used, post task
