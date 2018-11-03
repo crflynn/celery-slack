@@ -37,3 +37,6 @@ dump.rdb
 
 # macosx
 .DS_Store
+
+# intellij
+.idea/
