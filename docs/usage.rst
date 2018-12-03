@@ -78,7 +78,7 @@ of keyword arguments. e.g.
        # Some subset of options
    }
    app = Celery('project')
-   slack_app = Slackify(app, **options)
+   slack_app = Slackify(app, SLACK_WEBHOOK, **options)
 
 
 Most of the options are self explanatory, but here are some additional details:
