@@ -51,6 +51,7 @@ DEFAULT_OPTIONS = {
     "webhook": None,
     "beat_schedule": None,
     "beat_show_full_task_path": False,
+    "show_custom_username": False,
 }
 
 COLOR_REGEX = r"^#[a-fA-F0-9]{6}$"
