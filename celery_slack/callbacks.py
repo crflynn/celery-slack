@@ -1,4 +1,5 @@
 """Celery state and task callbacks."""
+import inspect
 from functools import wraps
 import time
 
@@ -72,7 +73,10 @@ def slack_task_failure(**cbkwargs):
             attachment = get_task_failure_attachment(
                 self.name, exc, task_id, args, kwargs, einfo, **cbkwargs)
 
-            if attachment:
+            annotations = getattr(inspect.trace()[-1][0].f_locals["task"], "__annotations__", {})
+            exceptions = annotations.get("ignore_exceptions", [])
+
+            if attachment and exc not in exceptions:
                 post_to_slack(cbkwargs["webhook"], " ", attachment)
 
             return func(self, exc, task_id, args, kwargs, einfo)
