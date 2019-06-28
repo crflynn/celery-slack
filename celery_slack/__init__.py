@@ -1,4 +1,5 @@
 """Module level accessible objects."""
+from celery_slack.utils import ignore
 from .__version__ import __version__
 from .__version__ import __description__
 from .__version__ import __url__
@@ -14,6 +15,7 @@ from .slackify import Slackify
 __all__ = (
     Slackify,
     DEFAULT_OPTIONS,
+    ignore,
     __version__,
     __description__,
     __url__,
