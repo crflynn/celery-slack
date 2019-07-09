@@ -40,3 +40,6 @@ dump.rdb
 
 # intellij
 .idea/
+
+# wheels
+pip-wheel-metadata

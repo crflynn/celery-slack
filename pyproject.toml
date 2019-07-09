@@ -31,23 +31,23 @@ description = "A Slack extension for Celery."
 authors = ["Flynn <crf204@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "~2.7 || ^3.4"
+python = "~2.7 || ^3.5"
 requests = "^2.22"
 ephem = "^3.7"
 celery = "^4.3"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.0"
+pytest = "^4.6"
 pytest-cov = "^2.7"
 pytest-mock = "^1.10"
 pytest-xdist = "^1.29"
 twine = "^1.13"
-sphinx = "^2.1"
+sphinx = "^1.8"
 sphinx-autobuild = "^0.7.1"
 sphinx-rtd-theme = "^0.4.3"
 vcrpy = "^2.0"
 responses = "^0.10.6"
-black = {version = "^18.3-alpha.0",allows-prereleases = true,python = "^3.6" }
+black = {version = "^18.3-alpha.0",allows-prereleases = true,python = "^3.7" }
 tox = "^3.13"
 tox-pyenv = "^1.1"
 
