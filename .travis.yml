@@ -41,6 +41,7 @@ install:
   - source $HOME/.poetry/env
   - echo $VIRTUAL_ENV
   - poetry run python -c "import os; print(os.getenv('VIRTUAL_ENV'))"
+  - poetry run python -c "import sys; print(sys.executable)"
   - poetry run which python
   - ls -la $HOME/.cache/pypoetry
   - poetry add celery==$CELERY_VERSION
