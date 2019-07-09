@@ -33,6 +33,7 @@ packages = [
     { include = "celery_slack" }
 ]
 include = ["HISTORY.rst"]
+keywords = ["celery", "slack"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: MIT License",
