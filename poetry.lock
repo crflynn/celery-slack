@@ -216,14 +216,6 @@ apipkg = ">=1.4"
 
 [[package]]
 category = "dev"
-description = "A platform independent file lock."
-name = "filelock"
-optional = false
-python-versions = "*"
-version = "3.0.12"
-
-[[package]]
-category = "dev"
 description = "Python function signatures from PEP362 for Python 2.6, 2.7 and 3.2+"
 marker = "python_version < \"3.3\""
 name = "funcsigs"
@@ -685,6 +677,7 @@ version = "1.1.2"
 [[package]]
 category = "dev"
 description = "Python Library for Tom's Obvious, Minimal Language"
+marker = "python_version >= \"3.7\" and python_version < \"4.0\""
 name = "toml"
 optional = false
 python-versions = "*"
@@ -697,35 +690,6 @@ name = "tornado"
 optional = false
 python-versions = ">= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, != 3.3.*"
 version = "5.1.1"
-
-[[package]]
-category = "dev"
-description = "tox is a generic virtualenv management and test command line tool"
-name = "tox"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "3.13.2"
-
-[package.dependencies]
-filelock = ">=3.0.0,<4"
-importlib-metadata = ">=0.12,<1"
-packaging = ">=14"
-pluggy = ">=0.12.0,<1"
-py = ">=1.4.17,<2"
-six = ">=1.0.0,<2"
-toml = ">=0.9.4"
-virtualenv = ">=14.0.0"
-
-[[package]]
-category = "dev"
-description = "tox plugin that makes tox use `pyenv which` to find python executables"
-name = "tox-pyenv"
-optional = false
-python-versions = "*"
-version = "1.1.0"
-
-[package.dependencies]
-tox = ">=2.0"
 
 [[package]]
 category = "dev"
@@ -803,14 +767,6 @@ version = "1.3.0"
 
 [[package]]
 category = "dev"
-description = "Virtual Python Environment builder"
-name = "virtualenv"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "16.6.1"
-
-[[package]]
-category = "dev"
 description = "Filesystem events monitoring"
 name = "watchdog"
 optional = false
@@ -868,7 +824,7 @@ python-versions = ">=2.7"
 version = "0.5.2"
 
 [metadata]
-content-hash = "851b5da833bb4367af3eaef044bc35c3009051c748481f54a5c14481dba615f5"
+content-hash = "793dead9992ac561b7b2d3130b52f021b2b896940568f09c6d24a190831f056c"
 python-versions = "~2.7 || ^3.5"
 
 [metadata.hashes]
@@ -895,7 +851,6 @@ coverage = ["0c5fe441b9cfdab64719f24e9684502a59432df7570521563d7b1aff27ac755f", 
 docutils = ["02aec4bd92ab067f6ff27a38a38a41173bf01bed8f89157768c1573f53e474a6", "51e64ef2ebfb29cae1faa133b3710143496eca21c530f3f71424d77687764274", "7a4bd47eaf6596e1295ecb11361139febe29b084a87bf005bf899f9a42edc3c6"]
 ephem = ["3884de133045d2f12784ef456c0f5557139a247b88d2c26097f7bd420803ed7f", "4bcd9899863ef04f4e75d894a6973dce4b4d16baeb8c2e96fb66bd3c677491a2", "6a2e445ba3a1e6bd9d6dedcafa4dda83957f4f9b0efac3d642974c55faebcfa4", "7a4c82b1def2893e02aec0394f108d24adb17bd7b0ca6f4bc78eb7120c0212ac", "7af6d726c3d903087c284e3dd72c5cda2b5438e84f2d564314469f0fb7494fab", "9ea5c8d9b407fe151cece238d13e3ca12114ac5c73269ef6541bf65b208048a3", "bb3e04e981352ab8c6049325533944b882d9be1bf13c19be5d85b918ba75723f", "f19a380f83f36e56e6e499bf673a43c42ed28c766c9cafb4326b5defcca0a116", "fd15421938cac27cd87c3b73c81e4695ab7a22cd37d43e05090140f5d48392d8"]
 execnet = ["027ee5d961afa01e97b90d6ccc34b4ed976702bc58e7f092b3c513ea288cb6d2", "752a3786f17416d491f833a29217dda3ea4a471fc5269c492eebcee8cc4772d3"]
-filelock = ["18d82244ee114f543149c66a6e0c14e9c4f8a1044b5cdaadd0f82159d6a6ff59", "929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"]
 funcsigs = ["330cc27ccbf7f1e992e69fef78261dc7c6569012cf397db8d3de0234e6c937ca", "a7bb0f2cf3a3fd1ab2732cb49eba4252c2af4240442415b4abce3b87022a8f50"]
 idna = ["c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407", "ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"]
 imagesize = ["3f349de3eb99145973fefb7dbe38554414e5c30abd0c8e4b970a7c9d09f3a1d8", "f3832918bc3c66617f92e35f5d70729187676313caa60c187eb0f28b8fe5e3b5"]
@@ -936,15 +891,12 @@ sphinx-rtd-theme = ["00cf895504a7895ee433807c62094cf1e95f065843bf3acd17037c3e9a2
 sphinxcontrib-websupport = ["1501befb0fdf1d1c29a800fdbf4ef5dc5369377300ddbdd16d2cd40e54c6eefc", "e02f717baf02d0b6c3dd62cf81232ffca4c9d5c331e03766982e3ff9f1d2bc3f"]
 toml = ["229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c", "235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e", "f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"]
 tornado = ["0662d28b1ca9f67108c7e3b77afabfb9c7e87bde174fbda78186ecedc2499a9d", "4e5158d97583502a7e2739951553cbd88a72076f152b4b11b64b9a10c4c49409", "732e836008c708de2e89a31cb2fa6c0e5a70cb60492bee6f1ea1047500feaf7f", "8154ec22c450df4e06b35f131adc4f2f3a12ec85981a203301d310abf580500f", "8e9d728c4579682e837c92fdd98036bd5cdefa1da2aaf6acf26947e6dd0c01c5", "d4b3e5329f572f055b587efc57d29bd051589fb5a43ec8898c77a47ec2fa2bbb", "e5f2585afccbff22390cddac29849df463b252b711aa2ce7c5f3f342a5b3b444"]
-tox = ["dab0b0160dd187b654fc33d690ee1d7bf328bd5b8dc6ef3bb3cc468969c659ba", "ee35ffce74933a6c6ac10c9a0182e41763140a5a5070e21b114feca56eaccdcd"]
-tox-pyenv = ["916c2213577aec0b3b5452c5bfb32fd077f3a3196f50a81ad57d7ef3fc2599e4", "e470c18af115fe52eeff95e7e3cdd0793613eca19709966fc2724b79d55246cb"]
 tqdm = ["14a285392c32b6f8222ecfbcd217838f88e11630affe9006cd0e94c7eff3cb61", "25d4c0ea02a305a688e7e9c2cdc8f862f989ef2a4701ab28ee963295f5b109ab"]
 twine = ["0fb0bfa3df4f62076cab5def36b1a71a2e4acb4d1fa5c97475b048117b1a6446", "d6c29c933ecfc74e9b1d9fa13aa1f87c5d5770e119f5a4ce032092f0ff5b14dc"]
 typing = ["38566c558a0a94d6531012c8e917b1b8518a41e418f7f15f00e129cc80162ad3", "53765ec4f83a2b720214727e319607879fec4acde22c4fbb54fa2604e79e44ce", "84698954b4e6719e912ef9a42a2431407fe3755590831699debda6fba92aac55"]
 urllib3 = ["b246607a25ac80bedac05c6f282e3cdaf3afb65420fd024ac94435cabe6e18d1", "dbe59173209418ae49d485b87d1681aefa36252ee85884c31346debd19463232"]
 vcrpy = ["127e79cf7b569d071d1bd761b83f7b62b2ce2a2eb63ceca7aa67cba8f2602ea3", "57be64aa8e9883a4117d0b15de28af62275c001abcdb00b6dc2d4406073d9a4f"]
 vine = ["133ee6d7a9016f177ddeaf191c1f58421a1dcc6ee9a42c58b34bed40e1d2cd87", "ea4947cc56d1fd6f2095c8d543ee25dad966f78692528e68b4fada11ba3f98af"]
-virtualenv = ["b7335cddd9260a3dd214b73a2521ffc09647bde3e9457fcca31dc3be3999d04a", "d28ca64c0f3f125f59cabf13e0a150e1c68e5eea60983cc4395d88c584495783"]
 watchdog = ["965f658d0732de3188211932aeb0bb457587f04f63ab4c1e33eab878e9de961d"]
 wcwidth = ["3df37372226d6e63e1b1e1eda15c594bca98a22d33a23832a90998faa96bc65e", "f4ebe71925af7b40a864553f761ed559b43544f8f71746c2d756c7fe788ade7c"]
 webencodings = ["a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78", "b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"]
