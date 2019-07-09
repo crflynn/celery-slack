@@ -47,7 +47,7 @@ sphinx-autobuild = "^0.7.1"
 sphinx-rtd-theme = "^0.4.3"
 vcrpy = "^2.0"
 responses = "^0.10.6"
-black = {version = "^18.3-alpha.0",allows-prereleases = true}
+black = {version = "^18.3-alpha.0",allows-prereleases = true,python = "^3.6" }
 tox = "^3.13"
 tox-pyenv = "^1.1"
 
