@@ -42,7 +42,6 @@ before_install:
   - echo $VIRTUAL_ENV
   - poetry run python -c "import os; print(os.getenv('VIRTUAL_ENV'))"
   - poetry run which python
-  - ls -la $HOME/.cache
   - ls -la $HOME/.cache/pypoetry
   - poetry add celery==$CELERY_VERSION
   - poetry add codecov
