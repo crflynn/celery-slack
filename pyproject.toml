@@ -6,7 +6,6 @@ exclude = '''
 (
   /(
       \.eggs         # exclude a few common directories in the root of the project
-    | \.circleci
     | \.git
     | \.github
     | \.hg
@@ -15,11 +14,8 @@ exclude = '''
     | \.tox
     | \.venv
     | _build
-    | buck-out
     | build
     | dist
-    | Notebooks
-    | Resources
   )/
 )
 '''
