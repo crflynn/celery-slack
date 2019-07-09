@@ -1,12 +1,12 @@
 """The celery app."""
 import logging
 import os
-# import sys
 
 from celery import Celery
 
 from celery_slack import Slackify
 from .schedule import get_schedule
+
 try:
     from ..secret import slack_webhook
 except Exception:

@@ -3,7 +3,8 @@
 http://docs.celeryproject.org/en/latest/userguide/configuration.html#general-settings
 Most of the settings commented here with default values.
 """
-from .schedule import get_schedule, get_imports
+from .schedule import get_imports
+from .schedule import get_schedule
 
 
 # General settings

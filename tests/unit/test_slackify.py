@@ -9,10 +9,7 @@ from celery_slack.exceptions import InvalidColorException
 from .conftest import get_options
 
 
-def test_slackify_webhook_exception(
-        possible_webhook,
-        default_options,
-        ):
+def test_slackify_webhook_exception(possible_webhook, default_options):
     """Test Slackify construction."""
     these_options = locals()
     these_options.pop("default_options")
@@ -28,12 +25,7 @@ def test_slackify_webhook_exception(
         return
 
 
-def test_slackify_task_filtration_exception(
-        webhook,
-        include_tasks,
-        exclude_tasks,
-        default_options,
-        ):
+def test_slackify_task_filtration_exception(webhook, include_tasks, exclude_tasks, default_options):
     """Test TaskFiltrationException."""
     these_options = locals()
     these_options.pop("default_options")
@@ -63,8 +55,7 @@ def test_invalid_color_exception(webhook, default_options):
     slack_app = Slackify(app, **options)  # noqa F481
 
 
-def test_failure_only_patching(webhook, failures_only,
-                               default_options, mocker):
+def test_failure_only_patching(webhook, failures_only, default_options, mocker):
     """Test failures_only option omits patching on_success method."""
     these_options = locals()
     these_options.pop("default_options")
@@ -73,8 +64,7 @@ def test_failure_only_patching(webhook, failures_only,
     app = Celery("schedule")
     app.config_from_object("tests.celeryapp.config")
 
-    mocked_task_success = \
-        mocker.patch("celery_slack.slackify.slack_task_success")
+    mocked_task_success = mocker.patch("celery_slack.slackify.slack_task_success")
 
     slack_app = Slackify(app, **options)
 
@@ -94,8 +84,7 @@ def test_show_beat_option(webhook, show_beat, default_options, mocker):
     app = Celery("schedule")
     app.config_from_object("tests.celeryapp.config")
 
-    mocked_slack_beat_init = \
-        mocker.patch("celery_slack.slackify.slack_beat_init")
+    mocked_slack_beat_init = mocker.patch("celery_slack.slackify.slack_beat_init")
 
     slack_app = Slackify(app, **options)
 
@@ -115,8 +104,7 @@ def test_show_startup_option(webhook, show_startup, default_options, mocker):
     app = Celery("schedule")
     app.config_from_object("tests.celeryapp.config")
 
-    mocked_slack_celery_startup = \
-        mocker.patch("celery_slack.slackify.slack_celery_startup")
+    mocked_slack_celery_startup = mocker.patch("celery_slack.slackify.slack_celery_startup")
 
     slack_app = Slackify(app, **options)
 
@@ -136,8 +124,7 @@ def test_show_shutdown_option(webhook, show_shutdown, default_options, mocker):
     app = Celery("schedule")
     app.config_from_object("tests.celeryapp.config")
 
-    mocked_slack_celery_shutdown = \
-        mocker.patch("celery_slack.slackify.slack_celery_shutdown")
+    mocked_slack_celery_shutdown = mocker.patch("celery_slack.slackify.slack_celery_shutdown")
 
     slack_app = Slackify(app, **options)
 
@@ -157,10 +144,8 @@ def test_show_broker_option(webhook, show_broker, default_options, mocker):
     app = Celery("schedule")
     app.config_from_object("tests.celeryapp.config")
 
-    mocked_slack_broker_connect = \
-        mocker.patch("celery_slack.slackify.slack_broker_connect")
-    mocked_slack_broker_disconnect = \
-        mocker.patch("celery_slack.slackify.slack_broker_disconnect")
+    mocked_slack_broker_connect = mocker.patch("celery_slack.slackify.slack_broker_connect")
+    mocked_slack_broker_disconnect = mocker.patch("celery_slack.slackify.slack_broker_disconnect")
 
     slack_app = Slackify(app, **options)
 

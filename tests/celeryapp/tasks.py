@@ -1,5 +1,4 @@
 """Test tasks."""
-# flake8: noqa E501
 from tests.celeryapp.celeryapp import app
 
 
@@ -20,10 +19,12 @@ def solar_task(x, y):
     """Do nothing."""
     return "Solar task."
 
+
 @app.task
 def timedelta_task(x, y):
     """Do nothing."""
     return "Timedelta task."
+
 
 @app.task
 def number_task(x, y):

@@ -12,7 +12,7 @@ celerybeat-schedule.db
 # coverage
 .coverage
 .coverage.*
-_cov
+.htmlcov
 
 # python
 __pycache__
