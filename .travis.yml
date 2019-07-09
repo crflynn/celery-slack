@@ -36,7 +36,7 @@ matrix:
     env: CELERY_VERSION=4.3
 before_install:
   - python get-poetry.py --version 0.12.17 -y
-  install:
+install:
   - echo $VIRTUAL_ENV
   - source $HOME/.poetry/env
   - echo $VIRTUAL_ENV
