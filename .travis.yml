@@ -40,6 +40,6 @@ install:
   - poetry add codecov
 script:
   - poetry run pytest
-  - poetry run black --check .
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then (poetry run black --check .); fi
 after_success:
   - poetry run codecov
