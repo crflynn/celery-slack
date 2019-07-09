@@ -41,7 +41,7 @@ install:
   - poetry run python -c "import os; print(os.getenv('VIRTUAL_ENV'))"
   - poetry run python -c "import sys; print(sys.executable)"
   - poetry run which python
-  - ls -la $HOME/.cache/pypoetry
+  - ls -la $HOME/.cache/pypoetry/virtualenvs
   - poetry add celery==$CELERY_VERSION
   - poetry add codecov
 script:
