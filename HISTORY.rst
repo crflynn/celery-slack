@@ -1,6 +1,11 @@
 Release History
 ---------------
 
+0.4.0 (TBD)
+~~~~~~~~~~~
+
+* Drop support for Python 3.4 (requests is no longer compatible)
+
 0.3.0 (2018-06-16)
 ~~~~~~~~~~~~~~~~~~
 
