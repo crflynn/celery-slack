@@ -31,7 +31,7 @@ description = "A Slack extension for Celery."
 authors = ["Flynn <crf204@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "~2.7 || ^3.4"
 requests = "^2.22"
 ephem = "^3.7"
 celery = "^4.3"
