@@ -22,12 +22,8 @@ def test_schedule_to_string(schedule):
 
 
 def test_beat_init_attachment(
-        default_options,
-        show_celery_hostname,
-        use_fixed_width,
-        beat_schedule,
-        beat_show_full_task_path,
-        ):
+    default_options, show_celery_hostname, use_fixed_width, beat_schedule, beat_show_full_task_path
+):
     """Test the beat init attachments."""
     these_options = locals()
     these_options.pop("default_options")
@@ -53,10 +49,7 @@ def test_beat_init_attachment(
         assert "with schedule" not in message
 
 
-def test_celery_startup_attachment(
-        default_options,
-        show_celery_hostname,
-        ):
+def test_celery_startup_attachment(default_options, show_celery_hostname):
     """Test the celery startup attachment."""
     these_options = locals()
     these_options.pop("default_options")
@@ -71,10 +64,7 @@ def test_celery_startup_attachment(
         assert socket.gethostname() not in message
 
 
-def test_celery_shutdown_attachment(
-        default_options,
-        show_celery_hostname,
-        ):
+def test_celery_shutdown_attachment(default_options, show_celery_hostname):
     """Test the celery shutdown attachment."""
     these_options = locals()
     these_options.pop("default_options")
@@ -90,17 +80,17 @@ def test_celery_shutdown_attachment(
 
 
 def test_task_prerun_attachment(
-        default_options,
-        flower_base_url,
-        show_task_id,
-        show_task_args,
-        show_task_kwargs,
-        use_fixed_width,
-        task_id,
-        task,
-        args,
-        kwargs
-        ):
+    default_options,
+    flower_base_url,
+    show_task_id,
+    show_task_args,
+    show_task_kwargs,
+    use_fixed_width,
+    task_id,
+    task,
+    args,
+    kwargs,
+):
     """Test the task prerun attachment."""
     these_options = locals()
     these_options.pop("default_options")
@@ -109,8 +99,7 @@ def test_task_prerun_attachment(
     these_options.pop("args")
     these_options.pop("kwargs")
     options = get_options(default_options, **these_options)
-    attachment = get_task_prerun_attachment(
-        task_id, task, args, kwargs, **options)
+    attachment = get_task_prerun_attachment(task_id, task, args, kwargs, **options)
 
     message = attachment["attachments"][0]["text"]
     title_link = attachment["attachments"][0].get("title_link", None)
@@ -140,23 +129,23 @@ def test_task_prerun_attachment(
 
 
 def test_task_failure_attachment(
-        default_options,
-        flower_base_url,
-        show_task_id,
-        show_task_execution_time,
-        show_task_args,
-        show_task_kwargs,
-        show_task_exception_info,
-        use_fixed_width,
-        include_tasks,
-        exclude_tasks,
-        task_name,
-        exc,
-        task_id,
-        args,
-        kwargs,
-        einfo
-        ):
+    default_options,
+    flower_base_url,
+    show_task_id,
+    show_task_execution_time,
+    show_task_args,
+    show_task_kwargs,
+    show_task_exception_info,
+    use_fixed_width,
+    include_tasks,
+    exclude_tasks,
+    task_name,
+    exc,
+    task_id,
+    args,
+    kwargs,
+    einfo,
+):
     """Test the task failure attachment."""
     these_options = locals()
     these_options.pop("default_options")
@@ -170,8 +159,7 @@ def test_task_failure_attachment(
     options = get_options(default_options, **these_options)
 
     if bool(include_tasks) ^ bool(exclude_tasks):
-        attachment = get_task_failure_attachment(
-            task_name, exc, task_id, args, kwargs, einfo, **options)
+        attachment = get_task_failure_attachment(task_name, exc, task_id, args, kwargs, einfo, **options)
     else:
         return
 
@@ -222,22 +210,22 @@ def test_task_failure_attachment(
 
 
 def test_task_success_attachment(
-        default_options,
-        flower_base_url,
-        show_task_id,
-        show_task_execution_time,
-        show_task_args,
-        show_task_kwargs,
-        show_task_return_value,
-        use_fixed_width,
-        include_tasks,
-        exclude_tasks,
-        task_name,
-        retval,
-        task_id,
-        args,
-        kwargs
-        ):
+    default_options,
+    flower_base_url,
+    show_task_id,
+    show_task_execution_time,
+    show_task_args,
+    show_task_kwargs,
+    show_task_return_value,
+    use_fixed_width,
+    include_tasks,
+    exclude_tasks,
+    task_name,
+    retval,
+    task_id,
+    args,
+    kwargs,
+):
     """Test the task success attachment."""
     these_options = locals()
     these_options.pop("default_options")
@@ -250,8 +238,7 @@ def test_task_success_attachment(
     options = get_options(default_options, **these_options)
 
     if bool(include_tasks) ^ bool(exclude_tasks):
-        attachment = get_task_success_attachment(
-            task_name, retval, task_id, args, kwargs, **options)
+        attachment = get_task_success_attachment(task_name, retval, task_id, args, kwargs, **options)
     else:
         return
 
@@ -301,20 +288,14 @@ def test_task_success_attachment(
         assert "Return" not in message
 
 
-def test_broker_disconnect_attachment(
-        default_options,
-        show_celery_hostname,
-        process_name,
-        mocker,
-    ):
+def test_broker_disconnect_attachment(default_options, show_celery_hostname, process_name, mocker):
     """Test the broker disconnect attachment."""
     these_options = locals()
     these_options.pop("default_options")
     options = get_options(default_options, **these_options)
 
     mocked_process = MockProcess(process_name)
-    mocked_current_process_name = mocker.patch(
-        "celery_slack.attachments.current_process")
+    mocked_current_process_name = mocker.patch("celery_slack.attachments.current_process")
     mocked_current_process_name.return_value = mocked_process
 
     attachment = get_broker_disconnect_attachment(**options)
@@ -334,20 +315,14 @@ def test_broker_disconnect_attachment(
     assert "could not connect" in message
 
 
-def test_broker_connect_attachment(
-        default_options,
-        show_celery_hostname,
-        process_name,
-        mocker,
-    ):
+def test_broker_connect_attachment(default_options, show_celery_hostname, process_name, mocker):
     """Test the broker connect attachment."""
     these_options = locals()
     these_options.pop("default_options")
     options = get_options(default_options, **these_options)
 
     mocked_process = MockProcess(process_name)
-    mocked_current_process_name = mocker.patch(
-        "celery_slack.attachments.current_process")
+    mocked_current_process_name = mocker.patch("celery_slack.attachments.current_process")
     mocked_current_process_name.return_value = mocked_process
 
     attachment = get_broker_connect_attachment(**options)

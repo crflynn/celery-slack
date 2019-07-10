@@ -27,16 +27,14 @@ def post_to_slack(webhook, text=" ", attachment=None):
     payload = {"text": text if text != "" else " "}
     if attachment is not None:
         payload.update(attachment)
+    response = None
     try:
-        response = None
         response = requests.post(webhook, json=payload, timeout=TIMEOUT)
         response.raise_for_status()
     except RequestException as exc:
-        logging.error("Unable to post to Slack; {e}: {msg}".format(
-            e=type(exc).__name__, msg=str(exc)))
+        logging.error("Unable to post to Slack; {e}: {msg}".format(e=type(exc).__name__, msg=str(exc)))
         if response:
-            RETRY_AFTER = \
-                time.time() + int(response.headers.get("Retry-After", 0))
+            RETRY_AFTER = time.time() + int(response.headers.get("Retry-After", 0))
             RATE_LIMITED = True
 
     return response
@@ -50,30 +48,19 @@ def post_warning_to_slack(webhook, text, attachment=None):
         "the set of tasks associated with celery-slack before the application "
         "becomes permanently rate-limited or disabled.*"
     )
-    warning = {
-        "fallback": message,
-        "color": "#000000",
-        "text": message,
-        "mrkdwn_in": ["text"]
-    }
+    warning = {"fallback": message, "color": "#000000", "text": message, "mrkdwn_in": ["text"]}
     if attachment is None:
-        attachment = {
-            "attachments": [
-                warning
-            ],
-            "text": ""
-        }
+        attachment = {"attachments": [warning], "text": ""}
     else:
         attachment["attachments"].append(warning)
 
     payload = {"text": ""}
     payload.update(attachment)
+    response = None
     try:
-        response = None
         response = requests.post(webhook, json=payload, timeout=TIMEOUT)
         response.raise_for_status()
     except RequestException as exc:
-        logging.error("Unable to post to Slack; {e}: {msg}".format(
-            e=type(exc).__name__, msg=str(exc)))
+        logging.error("Unable to post to Slack; {e}: {msg}".format(e=type(exc).__name__, msg=str(exc)))
 
     return response
