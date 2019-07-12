@@ -1,4 +1,4 @@
-def ignore(*exceptions):
+def slack_ignore_exceptions(*exceptions):
     """
 
     :type exceptions: typing.List[Exception]

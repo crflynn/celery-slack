@@ -1,5 +1,5 @@
 """Module level accessible objects."""
-from celery_slack.decorators import ignore
+from celery_slack.decorators import slack_ignore_exceptions
 from .__version__ import __version__
 from .__version__ import __description__
 from .__version__ import __url__
@@ -15,7 +15,7 @@ from .slackify import Slackify
 __all__ = (
     Slackify,
     DEFAULT_OPTIONS,
-    ignore,
+    slack_ignore_exceptions,
     __version__,
     __description__,
     __url__,
