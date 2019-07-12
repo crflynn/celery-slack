@@ -3,6 +3,7 @@ def slack_ignore_exceptions(*exceptions):
 
     :type exceptions: typing.List[Exception]
     """
+
     def wrapper(f):
         annotations = getattr(f, "__annotations__", {})
         f.__annotations__ = annotations
