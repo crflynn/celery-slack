@@ -1,5 +1,5 @@
 """Module level accessible objects."""
-from celery_slack.utils import ignore
+from celery_slack.decorators import ignore
 from .__version__ import __version__
 from .__version__ import __description__
 from .__version__ import __url__
