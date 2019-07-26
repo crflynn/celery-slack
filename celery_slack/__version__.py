@@ -2,7 +2,7 @@
 __title__ = 'celery-slack'
 __description__ = 'A Slack extension for Celery.'
 __url__ = 'https://github.com/crflynn/celery-slack'
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 __author__ = 'Christopher Flynn'
 __author_email__ = 'crf204@gmail.com'
 __license__ = 'MIT'
