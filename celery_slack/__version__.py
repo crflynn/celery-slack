@@ -1,5 +1,5 @@
 """Version information."""
-__title__ = 'celery-slack'
+__title__ = 'celery-slack-webhooks'
 __description__ = 'A Slack extension for Celery.'
 __url__ = 'https://github.com/leigh-johnson/celery-slack'
 __version__ = '0.4.0'
