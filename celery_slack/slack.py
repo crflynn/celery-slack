@@ -24,8 +24,8 @@ def post_to_slack(webhook, text=" ", attachment=None, payload={}):
             RATE_LIMITED = False
             return post_warning_to_slack(webhook, text, attachment)
 
-    payload = payload.update({"text": text if text != "" else " "})
-    
+    payload.update({"text": text if text != "" else " "})
+
     if attachment is not None:
         payload.update(attachment)
     try:
