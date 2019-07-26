@@ -34,7 +34,7 @@ matrix:
     env: CELERY_VERSION=4.2
 # command to install dependencies
 install:
-  - pip install pytest>=4.4 pytest-mock pytest-cov pytest-xdist
+  - pip install pytest pytest-mock
   - pip install celery==$CELERY_VERSION requests ephem
   - if [[ $TRAVIS_PYTHON_VERSION == '2.7' || $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install responses; else pip install vcrpy; fi
   - pip install codecov
