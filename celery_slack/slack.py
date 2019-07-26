@@ -11,7 +11,7 @@ RATE_LIMITED = False
 TIMEOUT = 1
 
 
-def post_to_slack(webhook, text=" ", attachment=None):
+def post_to_slack(webhook, text=" ", attachment=None, payload={}):
     """Post a message to the slack channel."""
     global RETRY_AFTER
     global RATE_LIMITED
@@ -24,7 +24,8 @@ def post_to_slack(webhook, text=" ", attachment=None):
             RATE_LIMITED = False
             return post_warning_to_slack(webhook, text, attachment)
 
-    payload = {"text": text if text != "" else " "}
+    payload = payload.update({"text": text if text != "" else " "})
+    
     if attachment is not None:
         payload.update(attachment)
     try:
