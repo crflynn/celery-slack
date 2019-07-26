@@ -51,6 +51,11 @@ DEFAULT_OPTIONS = {
     "webhook": None,
     "beat_schedule": None,
     "beat_show_full_task_path": False,
+    "channel": "#alerts-celery", 
+    "username": "celery",
+    "default_emoji": ":celery:",
+    "success_emoji": ":check_green:",
+    "failure_emoji": ":red_circle:"
 }
 
 COLOR_REGEX = r"^#[a-fA-F0-9]{6}$"
