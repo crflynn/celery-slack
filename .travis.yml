@@ -1,45 +1,47 @@
 language: python
-# python versions
 matrix:
   include:
-  - python: "2.7"
+  - python: '2.7'
     env: CELERY_VERSION=3.1
-  - python: "2.7"
+  - python: '2.7'
     env: CELERY_VERSION=4.0
-  - python: "2.7"
+  - python: '2.7'
     env: CELERY_VERSION=4.1
-  - python: "2.7"
+  - python: '2.7'
     env: CELERY_VERSION=4.2
-  # - python: "3.3"
-  #   env: CELERY_VERSION=3.1
-  - python: "3.4"
+  - python: '3.4'
     env: CELERY_VERSION=3.1
-  - python: "3.4"
+  - python: '3.4'
     env: CELERY_VERSION=4.0
-  - python: "3.4"
+  - python: '3.4'
     env: CELERY_VERSION=4.1
-  - python: "3.4"
+  - python: '3.4'
     env: CELERY_VERSION=4.2
-  - python: "3.5"
+  - python: '3.5'
     env: CELERY_VERSION=3.1
-  - python: "3.5"
+  - python: '3.5'
     env: CELERY_VERSION=4.0
-  - python: "3.5"
+  - python: '3.5'
     env: CELERY_VERSION=4.1
-  - python: "3.5"
+  - python: '3.5'
     env: CELERY_VERSION=4.2
-  - python: "3.6"
+  - python: '3.6'
     env: CELERY_VERSION=4.1
-  - python: "3.6"
+  - python: '3.6'
     env: CELERY_VERSION=4.2
-# command to install dependencies
 install:
-  - pip install pytest pytest-mock
-  - pip install celery==$CELERY_VERSION requests ephem
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' || $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install responses; else pip install vcrpy; fi
-  - pip install codecov
-# command to run tests
+- pip install pytest pytest-mock
+- pip install celery==$CELERY_VERSION requests ephem
+- if [[ $TRAVIS_PYTHON_VERSION == '2.7' || $TRAVIS_PYTHON_VERSION == '3.3' ]]; then
+  pip install responses; else pip install vcrpy; fi
+- pip install codecov
 script: pytest
-# combinations to include
 after_success:
-  - codecov
+- codecov
+deploy:
+  provider: pypi
+  user: leigh-johnson
+  password:
+    secure: Qut8lhpG9ZCWfIGGZijsOIyUKM4e4pnVjJp0JX2ExbmE+0T6To8j2WHfw6KZKAFSpiy1Mc2owognyornkB8o34RjMJr14/5Rl1XM6Iiy02rlhK07tUIgLFJlnZdrfz/MoIt5nR6EFIYXEtN8oRsFP+EhCcnVqsC3Z0A0qJdoMdRP8g/TJsYf7f7lP76SDWUZoDUvNLsrCVNnwqsRcCX8H9mqUUiVs+KaeBc93LR/2w/gHYtoWWQ58wmfgI9vDzhbwqAzAlIsWtF9yXBZsquCLl0nALD4R0QtVBOi9kOZb3Mx+KILx6VKv3/LBDOzhT4J9RWF23pEVMIzyGQG/+akHlX6RBTTyzujhyvqOwZ2NZUyi7dYfkSUbGtNkssM2wPCLlpg8lQKzl8DHLHvH681LPAwQNBfxLq2I8N95KOCtwxYuuorhQm2uAjux/InXPI/H1AIbgAzn2BcZisPG6fu/UYPvY2KRjNX7+UrOcHgbP9uLh6QJLSIS+SX8e9K4B8RG0yhvEqMEwFLV14hDdzkN866YWtl4qzNLCxNFveIHtzumnM+sAEdxAjOcd/07ObD2qGOuTmNKtAFq4/YMBtkD3nJ1g3nBYX1jr8kOo1uJwUIocklpY4p51d49hd2F/aDTyYzosZxMPvrEVUlLyCdLNKplL1jvdrgos0UChOwAK8=
+  on:
+    branch: master
