@@ -1,6 +1,7 @@
 """Celery state and task callbacks."""
 from functools import wraps
 import time
+from celery.result import AsyncResult
 
 from .attachments import get_beat_init_attachment
 from .attachments import get_broker_connect_attachment
@@ -50,7 +51,7 @@ def slack_task_success(**cbkwargs):
             an instance of a Celery() object, thus it has the same signature.
             """
 
-            if self.request.status == 'DUPLICATE':
+            if AsyncResult(task_id).status == 'DUPLICATE':
                 attachment = get_task_duplicate_attachment(
                     self.name, retval, task_id, args, kwargs, **cbkwargs
                 )
