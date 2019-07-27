@@ -51,7 +51,7 @@ def slack_task_success(**cbkwargs):
             an instance of a Celery() object, thus it has the same signature.
             """
 
-            if AsyncResult(task_id).status == 'DUPLICATE':
+            if self(task_id).status == 'DUPLICATE':
                 attachment = get_task_duplicate_attachment(
                     self.name, retval, task_id, args, kwargs, **cbkwargs
                 )
