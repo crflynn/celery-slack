@@ -112,7 +112,7 @@ def test_slack_task_success_callback(
 
     class CallbackTester(object):
 
-        AsyncResult = mocker.MagicMock()
+        is_eager = True
         def __init__(self):
             self.name = task_name
 
@@ -166,7 +166,7 @@ def test_slack_task_failure_callback(
 
     class CallbackTester(object):
 
-        AsyncResult = mocker.MagicMock()
+        is_eager = True
 
         def __init__(self):
             self.name = task_name
