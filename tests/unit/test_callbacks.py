@@ -112,7 +112,7 @@ def test_slack_task_success_callback(
 
     class CallbackTester(mocker.MagicMock):
 
-        def __init__(self):
+        def __init__(self, *args, **kwargs):
             super(mocker.MagicMock, self).__init__()
 
         @slack_task_success(**options)
@@ -165,7 +165,7 @@ def test_slack_task_failure_callback(
 
     class CallbackTester(mocker.MagicMock):
 
-        def __init__(self):
+        def __init__(self, *args, **kwargs):
             super(mocker.MagicMock, self).__init__()
 
         @slack_task_failure(**options)
