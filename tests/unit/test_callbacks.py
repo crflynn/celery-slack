@@ -110,9 +110,11 @@ def test_slack_task_success_callback(
     options = get_options(default_options, **these_options)
     mocked_post_to_slack = mocker.patch("celery_slack.callbacks.post_to_slack")
 
+    class RequestTester(object):
+        is_eager = False
     class CallbackTester(object):
 
-        is_eager = True
+        request = RequestTester()
         def __init__(self):
             self.name = task_name
 
@@ -164,9 +166,11 @@ def test_slack_task_failure_callback(
     options = get_options(default_options, **these_options)
     mocked_post_to_slack = mocker.patch("celery_slack.callbacks.post_to_slack")
 
+    class RequestTester(object):
+        is_eager = False
     class CallbackTester(object):
 
-        is_eager = True
+        request = RequestTester()
 
         def __init__(self):
             self.name = task_name
