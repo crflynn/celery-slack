@@ -1,5 +1,4 @@
 """Test the callback functions and wrappers."""
-from unittest.mock import MagicMock
 from celery_slack.callbacks import slack_task_prerun
 from celery_slack.callbacks import slack_task_failure
 from celery_slack.callbacks import slack_task_success
