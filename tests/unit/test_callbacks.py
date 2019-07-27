@@ -111,12 +111,11 @@ def test_slack_task_success_callback(
     options = get_options(default_options, **these_options)
     mocked_post_to_slack = mocker.patch("celery_slack.callbacks.post_to_slack")
 
-    class CallbackTester(object):
+    class CallbackTester(MagicMock):
 
-        request = MagicMock()
         def __init__(self):
-            self.name = task_name
-
+            super(MagicMock, self).__init__()
+            
         @slack_task_success(**options)
         def callback(self, retval, task_id, args, kwargs):
             pass
@@ -167,10 +166,8 @@ def test_slack_task_failure_callback(
 
     class CallbackTester(object):
 
-        request = MagicMock()
-
         def __init__(self):
-            self.name = task_name
+            super(MagicMock, self).__init__()
 
         @slack_task_failure(**options)
         def callback(self, exc, task_id, args, kwargs, einfo):
