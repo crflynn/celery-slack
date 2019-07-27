@@ -137,6 +137,77 @@ def get_task_success_attachment(task_name, retval, task_id,
 
     return attachment
 
+def get_task_duplicate_attachment(task_name, retval, task_id,
+                                args, kwargs, **cbkwargs):
+    """Create the slack message attachment for a task duplicate state."""
+    if (cbkwargs["exclude_tasks"] and
+            any([re.search(task, task_name)
+                for task in cbkwargs["exclude_tasks"]])):
+        STOPWATCH.pop(task_id)
+        return
+    elif (cbkwargs["include_tasks"] and
+            not any([re.search(task, task_name)
+                    for task in cbkwargs["include_tasks"]])):
+        STOPWATCH.pop(task_id)
+        return
+
+    if isinstance(retval, dict):
+        retval = json.dumps(retval, indent=4)
+    else:
+        retval = str(retval)
+
+    message = "DUPLICATE -- " + task_name.rsplit(".", 1)[-1]
+
+    elapsed = divmod(time.time() - STOPWATCH.pop(task_id), 60)
+
+    lines = ["Name: *" + task_name + "*"]
+
+    if cbkwargs["show_task_execution_time"]:
+        lines.append("Execution time: {m} minutes {s} seconds".format(
+            m=str(int(elapsed[0])),
+            s=str(int(elapsed[1])),
+        ))
+    if cbkwargs["show_task_id"]:
+        lines.append("Task ID: " + task_id)
+
+    if cbkwargs["use_fixed_width"]:
+        if cbkwargs["show_task_args"]:
+            lines.append("args: " + "`" + str(args) + "`")
+        if cbkwargs["show_task_kwargs"]:
+            lines.append("kwargs: " + "`" + str(kwargs) + "`")
+        if cbkwargs["show_task_return_value"]:
+            lines.append("Returned: " + "```" + str(retval) + "```")
+    else:
+        if cbkwargs["show_task_args"]:
+            lines.append("args: " + str(args))
+        if cbkwargs["show_task_kwargs"]:
+            lines.append("kwargs: " + str(kwargs))
+        if cbkwargs["show_task_return_value"]:
+            lines.append("Returned: " + str(retval))
+
+    success = "\n".join(lines)
+
+    attachment = {
+        "attachments": [
+            {
+                "fallback": message,
+                "color": cbkwargs["slack_task_duplicate_color"],
+                "text": success,
+                "title": message,
+                "mrkdwn_in": ["text"]
+            }
+        ],
+        "text": ""
+    }
+
+    if cbkwargs["flower_base_url"]:
+        attachment["attachments"][0]["title_link"] = (
+            cbkwargs["flower_base_url"] +
+            "/task/{tid}".format(tid=task_id)
+        )
+
+    return attachment
+
 
 def get_task_failure_attachment(task_name, exc, task_id, args,
                                 kwargs, einfo, **cbkwargs):

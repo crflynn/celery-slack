@@ -30,6 +30,7 @@ DEFAULT_OPTIONS = {
     "slack_task_prerun_color": "#D3D3D3",
     "slack_task_success_color": "#36A64F",
     "slack_task_failure_color": "#D00001",
+    "slack_task_duplicate_color": "#DCDCDC",
     "slack_request_timeout": 1,
     "flower_base_url": None,
     "show_celery_hostname": False,

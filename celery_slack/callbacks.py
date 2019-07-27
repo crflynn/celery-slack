@@ -49,8 +49,15 @@ def slack_task_success(**cbkwargs):
             This function is meant to decorate app.Task.on_success where app is
             an instance of a Celery() object, thus it has the same signature.
             """
-            attachment = get_task_success_attachment(
-                self.name, retval, task_id, args, kwargs, **cbkwargs)
+
+            if self.request.status == 'DUPLICATE':
+                attachment = get_task_duplicate_attachment(
+                    self.name, retval, task_id, args, kwargs, **cbkwargs
+                )
+            else:
+
+                attachment = get_task_success_attachment(
+                    self.name, retval, task_id, args, kwargs, **cbkwargs)
 
             if attachment:
                 post_to_slack(cbkwargs["webhook"], " ", attachment, payload={

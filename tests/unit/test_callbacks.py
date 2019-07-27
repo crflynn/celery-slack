@@ -1,4 +1,5 @@
 """Test the callback functions and wrappers."""
+from unittest.mock import MagicMock
 from celery_slack.callbacks import slack_task_prerun
 from celery_slack.callbacks import slack_task_failure
 from celery_slack.callbacks import slack_task_success
@@ -111,6 +112,8 @@ def test_slack_task_success_callback(
     mocked_post_to_slack = mocker.patch("celery_slack.callbacks.post_to_slack")
 
     class CallbackTester(object):
+
+        request = MagicMock()
         def __init__(self):
             self.name = task_name
 
@@ -163,6 +166,9 @@ def test_slack_task_failure_callback(
     mocked_post_to_slack = mocker.patch("celery_slack.callbacks.post_to_slack")
 
     class CallbackTester(object):
+
+        request = MagicMock()
+
         def __init__(self):
             self.name = task_name
 
