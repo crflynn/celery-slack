@@ -50,14 +50,14 @@ def slack_task_success(**cbkwargs):
             an instance of a Celery() object, thus it has the same signature.
             """
 
-            if not self.request.is_eager and self.AsyncResult(task_id).status == 'DUPLICATE':
-                attachment = get_task_duplicate_attachment(
-                    self.name, retval, task_id, args, kwargs, **cbkwargs
-                )
-            else:
+            # if not self.request.is_eager and self.AsyncResult(task_id).status == 'DUPLICATE':
+            #     attachment = get_task_duplicate_attachment(
+            #         self.name, retval, task_id, args, kwargs, **cbkwargs
+            #     )
+            # else:
 
-                attachment = get_task_success_attachment(
-                    self.name, retval, task_id, args, kwargs, **cbkwargs)
+            attachment = get_task_success_attachment(
+                self.name, retval, task_id, args, kwargs, **cbkwargs)
 
             if attachment:
                 post_to_slack(cbkwargs["webhook"], " ", attachment, payload={

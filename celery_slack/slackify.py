@@ -126,7 +126,7 @@ class Slackify(object):
         # Task
         task_prerun.connect(
             slack_task_prerun(**self.options),
-            weak=True
+            weak=False
         )
 
     def _decorate_task_methods(self):
