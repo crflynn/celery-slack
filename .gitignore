@@ -40,3 +40,5 @@ dump.rdb
 
 # intellij
 .idea/
+
+.venv/

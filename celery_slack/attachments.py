@@ -19,7 +19,9 @@ BEAT_DELIMITER = " -> "
 
 def add_task_to_stopwatch(task_id):
     """Add a task_id to the STOPWATCH dict."""
-    STOPWATCH[task_id] = time.time()
+    if task_id not in STOPWATCH.keys():
+        STOPWATCH[task_id] = time.time()
+        return True
 
 
 def get_task_prerun_attachment(task_id, task, args, kwargs, **cbkwargs):

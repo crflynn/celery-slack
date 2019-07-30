@@ -22,9 +22,13 @@ def slack_task_prerun(**cbkwargs):
         This function connects to the task_prerun signal in order to be able to
         output execution time on tasks.
         """
-        add_task_to_stopwatch(task_id)
 
-        if cbkwargs["show_task_prerun"]:
+        # if task already in stopwatch, skip pre-run callback should be a no-op
+        # this prevents retry-looping tasks from updating the stopwatch on each retry attempt
+
+        initial_run = add_task_to_stopwatch(task_id)
+
+        if cbkwargs["show_task_prerun"] and initial_run:
 
             attachment = get_task_prerun_attachment(
                 task_id, task, args, kwargs, **cbkwargs)
