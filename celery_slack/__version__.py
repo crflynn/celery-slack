@@ -2,7 +2,7 @@
 __title__ = 'celery-slack-webhooks'
 __description__ = 'A Slack extension for Celery.'
 __url__ = 'https://github.com/leigh-johnson/celery-slack'
-__version__ = '0.4.4'
+__version__ = '0.4.5'
 __author__ = 'Leigh Johnson'
 __author_email__ = 'ljohnson@slack-corp.com'
 __license__ = 'MIT'

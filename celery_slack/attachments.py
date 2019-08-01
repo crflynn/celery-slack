@@ -19,11 +19,25 @@ BEAT_DELIMITER = " -> "
 
 def add_task_to_stopwatch(task_id):
     """Add a task_id to the STOPWATCH dict."""
-    STOPWATCH[task_id] = time.time()
+    if task_id not in STOPWATCH.keys():
+        STOPWATCH[task_id] = time.time()
+        return True
 
 
 def get_task_prerun_attachment(task_id, task, args, kwargs, **cbkwargs):
     """Create the slack message attachment for a task prerun."""
+
+    if (cbkwargs["exclude_tasks"] and
+            any([re.search(task, task_name)
+                for task in cbkwargs["exclude_tasks"]])):
+        STOPWATCH.pop(task_id)
+        return
+    elif (cbkwargs["include_tasks"] and
+            not any([re.search(task, task_name)
+                    for task in cbkwargs["include_tasks"]])):
+        STOPWATCH.pop(task_id)
+        return
+    
     message = "Executing -- " + task.name.rsplit(".", 1)[-1]
 
     lines = ["Name: *" + task.name + "*"]
