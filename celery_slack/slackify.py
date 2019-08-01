@@ -31,6 +31,7 @@ DEFAULT_OPTIONS = {
     "slack_task_success_color": "#36A64F",
     "slack_task_failure_color": "#D00001",
     "slack_task_duplicate_color": "#DCDCDC",
+    "slack_task_retry_color": "#9b59b6",
     "slack_request_timeout": 1,
     "flower_base_url": None,
     "show_celery_hostname": False,
@@ -41,6 +42,7 @@ DEFAULT_OPTIONS = {
     "show_task_exception_info": True,
     "show_task_return_value": True,
     "show_task_prerun": False,
+    "show_task_retry": True,
     "show_startup": True,
     "show_shutdown": True,
     "show_beat": True,
@@ -56,7 +58,8 @@ DEFAULT_OPTIONS = {
     "username": "celery",
     "default_emoji": ":celery:",
     "success_emoji": ":check_green:",
-    "failure_emoji": ":red_circle:"
+    "failure_emoji": ":red_circle:",
+    "retry_emoji": ":spinner"
 }
 
 COLOR_REGEX = r"^#[a-fA-F0-9]{6}$"
@@ -122,7 +125,7 @@ class Slackify(object):
                 slack_celery_shutdown(**self.options),
                 weak=False
             )
-
+        
         # Task
         task_prerun.connect(
             slack_task_prerun(**self.options),
@@ -134,6 +137,10 @@ class Slackify(object):
         if not self.options["failures_only"]:
             self.app.Task.on_success = \
                 slack_task_success(**self.options)(self.app.Task.on_success)
+        
+        if self.options["show_task_retry"]:
+            self.app.Task.on_retry = \
+                slack_task_retry(**self.options)(self.app.Task.on_retry)
         self.app.Task.on_failure = \
             slack_task_failure(**self.options)(self.app.Task.on_failure)
 
