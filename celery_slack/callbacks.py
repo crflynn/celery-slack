@@ -1,7 +1,8 @@
 """Celery state and task callbacks."""
-from functools import wraps
 import time
+from functools import wraps
 
+from .attachments import add_task_to_stopwatch
 from .attachments import get_beat_init_attachment
 from .attachments import get_broker_connect_attachment
 from .attachments import get_broker_disconnect_attachment
@@ -10,7 +11,6 @@ from .attachments import get_celery_startup_attachment
 from .attachments import get_task_failure_attachment
 from .attachments import get_task_prerun_attachment
 from .attachments import get_task_success_attachment
-from .attachments import add_task_to_stopwatch
 from .slack import post_to_slack
 
 
@@ -69,8 +69,10 @@ def slack_task_failure(**cbkwargs):
             instance of a Celery() object, thus it has the same signature.
             """
             attachment = get_task_failure_attachment(self.name, exc, task_id, args, kwargs, einfo, **cbkwargs)
+            exceptions = getattr(self.run, "__annotations__", {}).get("ignored_exceptions", [])
+            should_notify = not any(isinstance(exc, exception) for exception in exceptions)
 
-            if attachment:
+            if attachment and should_notify:
                 post_to_slack(cbkwargs["webhook"], " ", attachment)
 
             return func(self, exc, task_id, args, kwargs, einfo)
