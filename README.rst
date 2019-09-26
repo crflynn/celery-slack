@@ -129,12 +129,9 @@ of keyword arguments. e.g.
 
 Most of the options are self explanatory, but here are some additional details:
 
-* **slack_\*_color**: The left vertical bar color associated with the slack
-    message attachments
+* **slack_\*_color**: The left vertical bar color associated with the slack message attachments
 * **slack_request_timeout**: The Slack message request timeout in seconds
-* **flower_base_url**: e.g. https://flower.example.com, if provided, the slack
-    message titles will link to task pages
-    in `Flower <http://flower.readthedocs.io/en/latest/>`_
+* **flower_base_url**: e.g. https://flower.example.com, if provided, the slack message titles will link to task pages in `Flower <http://flower.readthedocs.io/en/latest/>`_
 * **show_task_id**: Show the uuid for the task.
 * **show_task_execution_time**: Show time to complete task in minutes/seconds
 * **show_celery_hostname**: Show the machine hostname on celery/beat messages
@@ -146,26 +143,14 @@ Most of the options are self explanatory, but here are some additional details:
 * **show_startup**: Post message when celery starts
 * **show_shutdown**: Post message when celery stops
 * **show_beat**: Post message when beat starts
-* **show_broker**: Post messages when celery/beat disconnect from or reconnect
-    to the broker
-* **use_fixed_width**: Use slack fixed width formatting for args, kwargs,
-    retval, and exception info
-* **include_tasks**: A list of task paths to include. If used, post task
-    messages only for these tasks. Uses regex pattern matching.
-    e.g. ``module.submodule.taskname`` for a specific task or
-    just ``module.submodule`` for all tasks in that submodule. Cannot be used
-    in conjunction with ``exclude_tasks``.
-* **exclude_tasks**: A list of task paths to exclude. If used, suppress task
-    messages only for these tasks. All other tasks will generate slack
-    messages. Cannot be used in conjunction with ``include_tasks``. Uses
-    regex pattern matching.
+* **show_broker**: Post messages when celery/beat disconnect from or reconnect to the broker
+* **use_fixed_width**: Use slack fixed width formatting for args, kwargs, retval, and exception info
+* **include_tasks**: A list of task paths to include. If used, post task messages only for these tasks. Uses regex pattern matching. e.g. ``module.submodule.taskname`` for a specific task or just ``module.submodule`` for all tasks in that submodule. Cannot be used in conjunction with ``exclude_tasks``.
+* **exclude_tasks**: A list of task paths to exclude. If used, suppress task messages only for these tasks. All other tasks will generate slack messages. Cannot be used in conjunction with ``include_tasks``. Uses regex pattern matching.
 * **failures_only**: Only post messages on task failures.
-* **webhook**: The only required parameter. A slack webhook corresponding to a
-    slack channel.
-* **beat_schedule**: The celery beat schedule. If provided, the beat_init
-    message will display the schedule.
-* **beat_show_full_task_path**: Show the full module-task path. If False
-    (default) only show `submodule.taskname`.
+* **webhook**: The only required parameter. A slack webhook corresponding to a slack channel.
+* **beat_schedule**: The celery beat schedule. If provided, the beat_init message will display the schedule.
+* **beat_show_full_task_path**: Show the full module-task path. If False (default) only show `submodule.taskname`.
 
 
 Warnings

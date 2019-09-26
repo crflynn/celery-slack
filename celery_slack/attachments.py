@@ -1,4 +1,5 @@
 """Slack attachment builders."""
+import platform
 from datetime import timedelta
 import json
 import re
@@ -51,32 +52,28 @@ def get_task_prerun_attachment(task_id, task, args, kwargs, **cbkwargs):
                 "color": cbkwargs["slack_task_prerun_color"],
                 "text": executing,
                 "title": message,
-                "mrkdwn_in": ["text"]
+                "mrkdwn_in": ["text"],
             }
         ],
-        "text": ""
+        "text": "",
     }
 
     if cbkwargs["flower_base_url"]:
-        attachment["attachments"][0]["title_link"] = (
-            cbkwargs["flower_base_url"] +
-            "/task/{tid}".format(tid=task_id)
-        )
+        attachment["attachments"][0]["title_link"] = cbkwargs["flower_base_url"] + "/task/{tid}".format(tid=task_id)
+
+    if cbkwargs["show_custom_username"]:
+        username = cbkwargs.get("username", "{}@{}".format(platform.node(), task.name))
+        attachment["username"] = username
 
     return attachment
 
 
-def get_task_success_attachment(task_name, retval, task_id,
-                                args, kwargs, **cbkwargs):
+def get_task_success_attachment(task_name, retval, task_id, args, kwargs, **cbkwargs):
     """Create the slack message attachment for a task success."""
-    if (cbkwargs["exclude_tasks"] and
-            any([re.search(task, task_name)
-                for task in cbkwargs["exclude_tasks"]])):
+    if cbkwargs["exclude_tasks"] and any([re.search(task, task_name) for task in cbkwargs["exclude_tasks"]]):
         STOPWATCH.pop(task_id)
         return
-    elif (cbkwargs["include_tasks"] and
-            not any([re.search(task, task_name)
-                    for task in cbkwargs["include_tasks"]])):
+    elif cbkwargs["include_tasks"] and not any([re.search(task, task_name) for task in cbkwargs["include_tasks"]]):
         STOPWATCH.pop(task_id)
         return
 
@@ -92,10 +89,7 @@ def get_task_success_attachment(task_name, retval, task_id,
     lines = ["Name: *" + task_name + "*"]
 
     if cbkwargs["show_task_execution_time"]:
-        lines.append("Execution time: {m} minutes {s} seconds".format(
-            m=str(int(elapsed[0])),
-            s=str(int(elapsed[1])),
-        ))
+        lines.append("Execution time: {m} minutes {s} seconds".format(m=str(int(elapsed[0])), s=str(int(elapsed[1]))))
     if cbkwargs["show_task_id"]:
         lines.append("Task ID: " + task_id)
 
@@ -123,32 +117,29 @@ def get_task_success_attachment(task_name, retval, task_id,
                 "color": cbkwargs["slack_task_success_color"],
                 "text": success,
                 "title": message,
-                "mrkdwn_in": ["text"]
+                "mrkdwn_in": ["text"],
             }
         ],
-        "text": ""
+        "text": "",
     }
 
     if cbkwargs["flower_base_url"]:
-        attachment["attachments"][0]["title_link"] = (
-            cbkwargs["flower_base_url"] +
-            "/task/{tid}".format(tid=task_id)
-        )
+        attachment["attachments"][0]["title_link"] = cbkwargs["flower_base_url"] + "/task/{tid}".format(tid=task_id)
+
+    if cbkwargs["show_custom_username"]:
+        service_name = cbkwargs.get("service_name", "celery")
+        username = cbkwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
 
     return attachment
 
 
-def get_task_failure_attachment(task_name, exc, task_id, args,
-                                kwargs, einfo, **cbkwargs):
+def get_task_failure_attachment(task_name, exc, task_id, args, kwargs, einfo, **cbkwargs):
     """Create the slack message attachment for task failure."""
-    if (cbkwargs["exclude_tasks"] and
-            any([re.search(task, task_name)
-                for task in cbkwargs["exclude_tasks"]])):
+    if cbkwargs["exclude_tasks"] and any([re.search(task, task_name) for task in cbkwargs["exclude_tasks"]]):
         STOPWATCH.pop(task_id)
         return
-    elif (cbkwargs["include_tasks"] and
-            not any([re.search(task, task_name)
-                    for task in cbkwargs["include_tasks"]])):
+    elif cbkwargs["include_tasks"] and not any([re.search(task, task_name) for task in cbkwargs["include_tasks"]]):
         STOPWATCH.pop(task_id)
         return
 
@@ -159,10 +150,7 @@ def get_task_failure_attachment(task_name, exc, task_id, args,
     lines = ["Name: *" + task_name + "*"]
 
     if cbkwargs["show_task_execution_time"]:
-        lines.append("Execution time: {m} minutes {s} seconds".format(
-            m=str(int(elapsed[0])),
-            s=str(int(elapsed[1])),
-        ))
+        lines.append("Execution time: {m} minutes {s} seconds".format(m=str(int(elapsed[0])), s=str(int(elapsed[1]))))
     if cbkwargs["show_task_id"]:
         lines.append("Task ID: " + task_id)
 
@@ -192,17 +180,18 @@ def get_task_failure_attachment(task_name, exc, task_id, args,
                 "color": cbkwargs["slack_task_failure_color"],
                 "text": failure,
                 "title": message,
-                "mrkdwn_in": ["text"]
+                "mrkdwn_in": ["text"],
             }
         ],
-        "text": ""
+        "text": "",
     }
 
     if cbkwargs["flower_base_url"]:
-        attachment["attachments"][0]["title_link"] = (
-            cbkwargs["flower_base_url"] +
-            "/task/{tid}".format(tid=task_id)
-        )
+        attachment["attachments"][0]["title_link"] = cbkwargs["flower_base_url"] + "/task/{tid}".format(tid=task_id)
+
+    if cbkwargs["show_custom_username"]:
+        username = cbkwargs.get("username", "{}@{}".format(platform.node(), task_name))
+        attachment["username"] = username
 
     return attachment
 
@@ -210,23 +199,21 @@ def get_task_failure_attachment(task_name, exc, task_id, args,
 def get_celery_startup_attachment(**kwargs):
     """Create the slack message attachment for celery startup."""
     if kwargs["show_celery_hostname"]:
-        message = "*Celery is starting up on {}.*".format(
-            socket.gethostname()
-        )
+        message = "*Celery is starting up on {}.*".format(socket.gethostname())
     else:
         message = "*Celery is starting up.*"
 
     attachment = {
         "attachments": [
-            {
-                "fallback": message,
-                "color": kwargs["slack_celery_startup_color"],
-                "text": message,
-                "mrkdwn_in": ["text"]
-            }
+            {"fallback": message, "color": kwargs["slack_celery_startup_color"], "text": message, "mrkdwn_in": ["text"]}
         ],
-        "text": ""
+        "text": "",
     }
+
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
 
     return attachment
 
@@ -234,9 +221,7 @@ def get_celery_startup_attachment(**kwargs):
 def get_celery_shutdown_attachment(**kwargs):
     """Create the slack message attachment for celery shutdown."""
     if kwargs["show_celery_hostname"]:
-        message = "_Celery is shutting down on {}._".format(
-            socket.gethostname()
-        )
+        message = "_Celery is shutting down on {}._".format(socket.gethostname())
     else:
         message = "_Celery is shutting down._"
 
@@ -246,11 +231,16 @@ def get_celery_shutdown_attachment(**kwargs):
                 "fallback": message,
                 "color": kwargs["slack_celery_shutdown_color"],
                 "text": message,
-                "mrkdwn_in": ["text"]
+                "mrkdwn_in": ["text"],
             }
         ],
-        "text": ""
+        "text": "",
     }
+
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
 
     return attachment
 
@@ -258,9 +248,7 @@ def get_celery_shutdown_attachment(**kwargs):
 def get_beat_init_attachment(**kwargs):
     """Create the slack message attachment for beat init."""
     if kwargs["show_celery_hostname"]:
-        message = "*Beat is (re)initializing on {}*".format(
-            socket.gethostname()
-        )
+        message = "*Beat is (re)initializing on {}*".format(socket.gethostname())
     else:
         message = "*Beat is (re)initializing*"
 
@@ -271,18 +259,16 @@ def get_beat_init_attachment(**kwargs):
         sched = []
         for task in sorted(beat_schedule):
             if kwargs["beat_show_full_task_path"]:
-                sched.append(
-                    task + BEAT_DELIMITER +
-                    schedule_to_string(beat_schedule[task]["schedule"]))
+                sched.append(task + BEAT_DELIMITER + schedule_to_string(beat_schedule[task]["schedule"]))
             else:
                 sched.append(
-                    task.split(".", 2)[-1] + BEAT_DELIMITER +
-                    schedule_to_string(beat_schedule[task]["schedule"]))
+                    task.split(".", 2)[-1] + BEAT_DELIMITER + schedule_to_string(beat_schedule[task]["schedule"])
+                )
         schedule = (
-            "\n*Task{}crontab(m/h/d/dM/MY) OR solar OR interval:*\n".format(
-                BEAT_DELIMITER
-            ) +
-            "```" + "\n".join(sched) + "```"
+            "\n*Task{}crontab(m/h/d/dM/MY) OR solar OR interval:*\n".format(BEAT_DELIMITER)
+            + "```"
+            + "\n".join(sched)
+            + "```"
         )
     else:
         message = message[:-1] + "." + message[-1:]
@@ -294,33 +280,32 @@ def get_beat_init_attachment(**kwargs):
                 "fallback": message,
                 "color": kwargs["slack_beat_init_color"],
                 "text": message + schedule,
-                "mrkdwn_in": ["text"]
+                "mrkdwn_in": ["text"],
             }
         ],
-        "text": ""
+        "text": "",
     }
+
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
 
     return attachment
 
 
-processes = {
-    "MainProcess": "Celery",
-    "Beat": "Beat"
-}
+processes = {"MainProcess": "Celery", "Beat": "Beat"}
 
 
 def get_broker_disconnect_attachment(**kwargs):
     """Create the slack message attachment for broker disconnection."""
     if kwargs["show_celery_hostname"]:
         message = "*{process} could not connect to broker on {host}.*".format(
-            process=processes.get(
-                current_process()._name, current_process()._name),
-            host=socket.gethostname()
+            process=processes.get(current_process()._name, current_process()._name), host=socket.gethostname()
         )
     else:
         message = "*{process} could not connect to broker.*".format(
-            process=processes.get(
-                current_process()._name, current_process()._name),
+            process=processes.get(current_process()._name, current_process()._name)
         )
 
     attachment = {
@@ -329,11 +314,16 @@ def get_broker_disconnect_attachment(**kwargs):
                 "fallback": message,
                 "color": kwargs["slack_broker_disconnect_color"],
                 "text": message,
-                "mrkdwn_in": ["text"]
+                "mrkdwn_in": ["text"],
             }
         ],
-        "text": ""
+        "text": "",
     }
+
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
 
     return attachment
 
@@ -342,27 +332,24 @@ def get_broker_connect_attachment(**kwargs):
     """Create the slack message attachment for broker connection."""
     if kwargs["show_celery_hostname"]:
         message = "*{process} (re)connected to broker on {host}.*".format(
-            process=processes.get(
-                current_process()._name, current_process()._name),
-            host=socket.gethostname()
+            process=processes.get(current_process()._name, current_process()._name), host=socket.gethostname()
         )
     else:
         message = "*{process} (re)connected to broker.*".format(
-            process=processes.get(
-                current_process()._name, current_process()._name),
+            process=processes.get(current_process()._name, current_process()._name)
         )
 
     attachment = {
         "attachments": [
-            {
-                "fallback": message,
-                "color": kwargs["slack_broker_connect_color"],
-                "text": message,
-                "mrkdwn_in": ["text"]
-            }
+            {"fallback": message, "color": kwargs["slack_broker_connect_color"], "text": message, "mrkdwn_in": ["text"]}
         ],
-        "text": ""
+        "text": "",
     }
+
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
 
     return attachment
 
