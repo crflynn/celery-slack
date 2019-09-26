@@ -1,4 +1,5 @@
 """Slack attachment builders."""
+import platform
 from datetime import timedelta
 import json
 import re
@@ -59,6 +60,10 @@ def get_task_prerun_attachment(task_id, task, args, kwargs, **cbkwargs):
 
     if cbkwargs["flower_base_url"]:
         attachment["attachments"][0]["title_link"] = cbkwargs["flower_base_url"] + "/task/{tid}".format(tid=task_id)
+
+    if cbkwargs["show_custom_username"]:
+        username = cbkwargs.get("username", "{}@{}".format(platform.node(), task.name))
+        attachment["username"] = username
 
     return attachment
 
@@ -121,6 +126,11 @@ def get_task_success_attachment(task_name, retval, task_id, args, kwargs, **cbkw
     if cbkwargs["flower_base_url"]:
         attachment["attachments"][0]["title_link"] = cbkwargs["flower_base_url"] + "/task/{tid}".format(tid=task_id)
 
+    if cbkwargs["show_custom_username"]:
+        service_name = cbkwargs.get("service_name", "celery")
+        username = cbkwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
+
     return attachment
 
 
@@ -179,6 +189,10 @@ def get_task_failure_attachment(task_name, exc, task_id, args, kwargs, einfo, **
     if cbkwargs["flower_base_url"]:
         attachment["attachments"][0]["title_link"] = cbkwargs["flower_base_url"] + "/task/{tid}".format(tid=task_id)
 
+    if cbkwargs["show_custom_username"]:
+        username = cbkwargs.get("username", "{}@{}".format(platform.node(), task_name))
+        attachment["username"] = username
+
     return attachment
 
 
@@ -195,6 +209,11 @@ def get_celery_startup_attachment(**kwargs):
         ],
         "text": "",
     }
+
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
 
     return attachment
 
@@ -217,6 +236,11 @@ def get_celery_shutdown_attachment(**kwargs):
         ],
         "text": "",
     }
+
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
 
     return attachment
 
@@ -262,6 +286,11 @@ def get_beat_init_attachment(**kwargs):
         "text": "",
     }
 
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
+
     return attachment
 
 
@@ -291,6 +320,11 @@ def get_broker_disconnect_attachment(**kwargs):
         "text": "",
     }
 
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
+
     return attachment
 
 
@@ -311,6 +345,11 @@ def get_broker_connect_attachment(**kwargs):
         ],
         "text": "",
     }
+
+    if kwargs["show_custom_username"]:
+        service_name = kwargs.get("service_name", "celery")
+        username = kwargs.get("username", "{}@{}".format(platform.node(), service_name))
+        attachment["username"] = username
 
     return attachment
 
