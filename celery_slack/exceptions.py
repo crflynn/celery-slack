@@ -1,5 +1,4 @@
 """Celery-slack exceptions."""
-# flake8: noqa D103
 
 
 class CelerySlackException(Exception):

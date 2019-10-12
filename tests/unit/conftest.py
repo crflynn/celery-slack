@@ -1,5 +1,4 @@
 """Pytest fixtures."""
-# flake8: noqa
 import copy
 from datetime import timedelta
 import os
@@ -8,6 +7,7 @@ import uuid
 
 from celery import __version__ as CELERY_VERSION
 from celery.schedules import crontab
+
 if CELERY_VERSION >= "4.0.0":
     from celery.schedules import solar
 import pytest
@@ -28,6 +28,7 @@ PYTHON_VERSION_THRESHOLD = "3.4"
 # Use vcrpy for python3.4 or higher, else use repsonses
 if PYTHON_VERSION >= PYTHON_VERSION_THRESHOLD:
     import vcr
+
     CASSETTE_LIBRARY = "tests/cassettes"
 
     if not os.path.exists(CASSETTE_LIBRARY):
@@ -44,7 +45,10 @@ if PYTHON_VERSION >= PYTHON_VERSION_THRESHOLD:
     @pytest.fixture
     def recorder():
         return RECORDER
+
+
 else:
+
     @pytest.fixture
     def recorder():
         return None
@@ -67,31 +71,30 @@ def possible_webhook(request):
     return request.param
 
 
-@pytest.fixture(params=[
-    {
-        "attachments": [
-            {
-                "fallback": "sample message",
-                "color": "#36A64F",
-                "text": "*sample* _message_",
-                "mrkdwn_in": ["text"]
-            }
-        ],
-        "text": ""
-    },
-    None
-])
+@pytest.fixture(
+    params=[
+        {
+            "attachments": [
+                {"fallback": "sample message", "color": "#36A64F", "text": "*sample* _message_", "mrkdwn_in": ["text"]}
+            ],
+            "text": "",
+        },
+        None,
+    ]
+)
 def slack_attachment(request):
     """Return a test slack message attachment."""
     return request.param
 
 
-@pytest.fixture(params=[
-    crontab(hour=12, minute=12),
-    solar("sunset", 50, 50) if CELERY_VERSION > "4.0.0" else 9000,
-    timedelta(5),
-    3000
-])
+@pytest.fixture(
+    params=[
+        crontab(hour=12, minute=12),
+        solar("sunset", 50, 50) if CELERY_VERSION > "4.0.0" else 9000,
+        timedelta(5),
+        3000,
+    ]
+)
 def schedule(request):
     """Return all the schedule types."""
     return request.param
@@ -100,6 +103,7 @@ def schedule(request):
 class ObjectWithStr(object):
     def __init__(self, name):
         self.name = name
+
     def __str__(self):
         return self.name
 
@@ -107,6 +111,7 @@ class ObjectWithStr(object):
 class ObjectWithRepr(object):
     def __init__(self, name):
         self.name = name
+
     def __repr__(self):
         return self.name
 
@@ -116,13 +121,15 @@ class ObjectWithout(object):
         self.name = name
 
 
-@pytest.fixture(params=[
-    {"return": "value"},
-    "return value",
-    ObjectWithStr("return value"),
-    ObjectWithRepr("return value"),
-    ObjectWithout("return value"),
-])
+@pytest.fixture(
+    params=[
+        {"return": "value"},
+        "return value",
+        ObjectWithStr("return value"),
+        ObjectWithRepr("return value"),
+        ObjectWithout("return value"),
+    ]
+)
 def retval(request):
     """Return a fake retval."""
     return request.param
@@ -302,6 +309,7 @@ def process_name(request):
 
 def mock_callback():
     pass
+
 
 @pytest.fixture(params=[None, mock_callback])
 def callback(request):

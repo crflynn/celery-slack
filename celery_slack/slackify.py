@@ -69,23 +69,18 @@ class Slackify(object):
         self.options = DEFAULT_OPTIONS.copy()
         self.options.update(**options)
         self.options["webhook"] = webhook
-        self.options["beat_schedule"] = (
-            beat_schedule or self.options["beat_schedule"]
-        )
+        self.options["beat_schedule"] = beat_schedule or self.options["beat_schedule"]
 
         if self.options["webhook"] is None:
             raise MissingWebhookException("Slack webhook must be provided.")
 
         if self.options["include_tasks"] and self.options["exclude_tasks"]:
-            raise TaskFiltrationException(
-                "Only one of 'include_tasks' and 'exclude_tasks' "
-                "options can be provided.")
+            raise TaskFiltrationException("Only one of 'include_tasks' and 'exclude_tasks' " "options can be provided.")
 
         colors = [self.options[c] for c in self.options.keys() if "color" in c]
         for color in colors:
             if not re.search(COLOR_REGEX, color):
-                raise InvalidColorException(
-                    "Color options must be hex colors.")
+                raise InvalidColorException("Color options must be hex colors.")
 
         self._connect_signals()
         self._decorate_task_methods()
@@ -100,45 +95,25 @@ class Slackify(object):
         """
         # Beat
         if self.options["show_beat"]:
-            beat_init.connect(
-                slack_beat_init(**self.options),
-                weak=False
-            )
+            beat_init.connect(slack_beat_init(**self.options), weak=False)
 
         # Celery
         if self.options["show_startup"]:
-            celeryd_init.connect(
-                slack_celery_startup(**self.options),
-                weak=False
-            )
+            celeryd_init.connect(slack_celery_startup(**self.options), weak=False)
         if self.options["show_shutdown"]:
-            worker_shutdown.connect(
-                slack_celery_shutdown(**self.options),
-                weak=False
-            )
+            worker_shutdown.connect(slack_celery_shutdown(**self.options), weak=False)
 
         # Task
-        task_prerun.connect(
-            slack_task_prerun(**self.options),
-            weak=False
-        )
+        task_prerun.connect(slack_task_prerun(**self.options), weak=False)
 
     def _decorate_task_methods(self):
         """Decorate the Task class result methods."""
         if not self.options["failures_only"]:
-            self.app.Task.on_success = \
-                slack_task_success(**self.options)(self.app.Task.on_success)
-        self.app.Task.on_failure = \
-            slack_task_failure(**self.options)(self.app.Task.on_failure)
+            self.app.Task.on_success = slack_task_success(**self.options)(self.app.Task.on_success)
+        self.app.Task.on_failure = slack_task_failure(**self.options)(self.app.Task.on_failure)
 
     def _decorate_kombu_retry(self):
         """Decorate the kombu.connection.retry_over_time function."""
         if self.options["show_broker"]:
-            kombu.connection.retry_over_time = \
-                slack_broker_disconnect(**self.options)(
-                    kombu.connection.retry_over_time
-                )
-            kombu.connection.retry_over_time = \
-                slack_broker_connect(**self.options)(
-                    kombu.connection.retry_over_time
-                )
+            kombu.connection.retry_over_time = slack_broker_disconnect(**self.options)(kombu.connection.retry_over_time)
+            kombu.connection.retry_over_time = slack_broker_connect(**self.options)(kombu.connection.retry_over_time)
