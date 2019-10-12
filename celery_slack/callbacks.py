@@ -164,6 +164,8 @@ def slack_broker_disconnect(**cbkwargs):
             interval_step=2,
             interval_max=30,
             callback=None,
+            timeout=None,
+            **fnkwargs,
         ):
             if args is None:
                 args = []
@@ -194,6 +196,8 @@ def slack_broker_disconnect(**cbkwargs):
                 interval_step=interval_step,
                 interval_max=interval_max,
                 callback=callback,
+                timeout=timeout,
+                **fnkwargs,
             )
 
         return wrapped_func
@@ -233,6 +237,8 @@ def slack_broker_connect(**cbkwargs):
             interval_step=2,
             interval_max=30,
             callback=None,
+            timeout=None,
+            **fnkwargs,
         ):
             if args is None:
                 args = []
@@ -251,6 +257,8 @@ def slack_broker_connect(**cbkwargs):
                     interval_step=interval_step,
                     interval_max=interval_max,
                     callback=callback,
+                    timeout=timeout,
+                    **fnkwargs,
                 )
             except Exception as exc:  # pragma: no cover
                 raise exc
