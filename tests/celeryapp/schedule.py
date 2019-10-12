@@ -29,7 +29,6 @@ schedule = {}
 
 def add_tasks_to_schedule(tasks, ctab):
     """Add the tasks to the schedule."""
-    the_task = {}
     for task in tasks:
         name = task
 
@@ -59,7 +58,8 @@ def get_schedule():
     return schedule
 
 
-def get_imports(sched=schedule):
+def get_imports(sched=None):
     """Get all the modules for a celery worker to import."""
-    modules_to_import = [task["task"].rsplit(".", 1)[0] for task in schedule.values()]
+    sched = sched or schedule
+    modules_to_import = [task["task"].rsplit(".", 1)[0] for task in sched.values()]
     return list(set(modules_to_import))
