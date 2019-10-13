@@ -176,14 +176,15 @@ def test_slack_broker_connect_callback(default_options, broker_connected, mocker
     def retry_over_time(
         fun,
         catch,
-        args=[],
-        kwargs={},
+        args=None,
+        kwargs=None,
         errback=None,
         max_retries=None,
         interval_start=2,
         interval_step=2,
         interval_max=30,
         callback=None,
+        timeout=None,
     ):
         pass
 
@@ -218,14 +219,15 @@ def test_slack_broker_disconnect_callback(default_options, mocker, callback):
     def retry_over_time(
         fun,
         catch,
-        args=[],
-        kwargs={},
+        args=None,
+        kwargs=None,
         errback=None,
         max_retries=None,
         interval_start=2,
         interval_step=2,
         interval_max=30,
         callback=None,
+        timeout=None,
     ):
         # Must execute the callback assuming dicsonnection occurred
         if callback is not None:
