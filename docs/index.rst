@@ -58,8 +58,8 @@ Celery-slack is a python package available on
 Compatibility
 -------------
 
-Celery-slack is tested against Celery versions 3.1, 4.0, 4.1 and 4.2, across
-corresponding compatible versions of Python including 2.7, 3.3, 3.4, 3.5, 3.6.
+Celery-slack is tested against Celery versions 3.1, 4.0, 4.1, 4.2, and 4.3 across
+corresponding compatible versions of Python including 2.7, 3.5, 3.6, and 3.7.
 It may or may not work on other versions of Celery and/or Python.
 
 Documentation

@@ -1,7 +1,7 @@
 Release History
 ---------------
 
-0.4.0 (2018-10-13)
+0.4.0 (2019-10-13)
 ~~~~~~~~~~~~~~~~~~
 
 * Drop support for Python 3.4 (requests is no longer compatible)

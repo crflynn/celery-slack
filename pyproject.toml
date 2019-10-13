@@ -21,7 +21,7 @@ exclude = '''
 '''
 
 [tool.poetry]
-name = "celery-slack"
+name = "celery_slack"
 version = "0.4.0"
 description = "A Slack extension for Celery."
 authors = ["Christopher Flynn <crf204@gmail.com>"]
