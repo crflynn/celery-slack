@@ -1,10 +1,12 @@
 Release History
 ---------------
 
-0.4.0 (TBD)
-~~~~~~~~~~~
+0.4.0 (2018-10-13)
+~~~~~~~~~~~~~~~~~~
 
 * Drop support for Python 3.4 (requests is no longer compatible)
+* Fix a bug with wrapping kombu's ``retry_over_time`` function with the correct signature
+* Fix ``_version.py`` file to avoid naming conflicts
 
 0.3.0 (2018-06-16)
 ~~~~~~~~~~~~~~~~~~
