@@ -1,6 +1,11 @@
 Release History
 ---------------
 
+0.4.1 (2019-10-15)
+~~~~~~~~~~~~~~~~~~
+
+* Fix broken dependency requirement for celery
+
 0.4.0 (2019-10-13)
 ~~~~~~~~~~~~~~~~~~
 
